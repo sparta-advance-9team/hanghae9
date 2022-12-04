@@ -20,14 +20,14 @@ public class ArticleService {
      @Transactional (readOnly = true)
      public List<ArticleResponseDto> getArticles() {
           return articleRepository.findAllByOrderByCreatedAtDesc().stream()
-               .map(ArticleResponseDto::new)
-               .collect(Collectors.toList());
+               .map(ArticleResponseDto::new) // Article >> ArticleResponseDto 로 타입변환
+               .collect(Collectors.toList()); // 다시 List로 묶은거
      }
      
      @Transactional
      public ArticleResponseDto createArticle(ArticleRequestDto requestDto) {
-          Article article = new Article(requestDto);
-          articleRepository.save(article);
+          Article article = new Article(requestDto); // ArticleRequestDto >> Article
+          article = articleRepository.save(article);
           return new ArticleResponseDto(article);
      }
      @Transactional (readOnly = true)
