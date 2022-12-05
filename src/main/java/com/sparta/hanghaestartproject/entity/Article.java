@@ -23,6 +23,10 @@ public class Article extends Timestamped{
      @Column (nullable = false)
      private String content;
      
+     @ManyToOne
+     @JoinColumn(name="user_id")
+     private User user;
+     
      public Article(ArticleRequestDto requestDto, String username){
           this.title = requestDto.getTitle();
           this.content = requestDto.getContent();
@@ -32,5 +36,10 @@ public class Article extends Timestamped{
      public void update(ArticleRequestDto requestDto) {
           this.title = requestDto.getTitle();
           this.content = requestDto.getContent();
+     }
+     
+     public void setUser(User user) {
+          this.user = user;
+          user.getArticles().add(this);
      }
 }

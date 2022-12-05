@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class UserResponseDto {
-     private String msg = "회원가입 성공";
+public class UserLoginResponseDto {
+     private String msg = "로그인 성공";
      private int statusCode = 200;
 }

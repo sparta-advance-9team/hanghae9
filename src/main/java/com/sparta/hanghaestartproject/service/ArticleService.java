@@ -40,6 +40,7 @@ public class ArticleService {
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Article article = new Article(requestDto, user.getUsername()); // ArticleRequestDto >> Article
           article = articleRepository.save(article);
+          article.setUser(user);
           return new ArticleResponseDto(article);
      }
      
