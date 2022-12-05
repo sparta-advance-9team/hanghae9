@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +23,11 @@ public class User {
      private Long id;
      
      @Column (nullable = false, unique = true)
+     @Pattern(regexp = "[a-z0-9]{4,10}")
      private String username;
      
      @Column(nullable = false)
+     @Pattern(regexp = "[a-zA-Z0-9]{8,15}")
      private String password;
      
      public User(String username, String password) {

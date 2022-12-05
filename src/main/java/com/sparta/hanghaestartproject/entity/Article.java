@@ -23,24 +23,14 @@ public class Article extends Timestamped{
      @Column (nullable = false)
      private String content;
      
-     @Column (nullable = false)
-     private String password;
-     
-     @ManyToOne
-     @JoinColumn(name="USER_ID", nullable = false)
-     private User user;
-     
-     public Article(ArticleRequestDto requestDto){
+     public Article(ArticleRequestDto requestDto, String username){
           this.title = requestDto.getTitle();
-          this.username = requestDto.getUsername();
           this.content = requestDto.getContent();
-          this.password = requestDto.getPassword();
+          this.username = username;
      }
      
      public void update(ArticleRequestDto requestDto) {
           this.title = requestDto.getTitle();
-          this.username = requestDto.getUsername();
           this.content = requestDto.getContent();
-          this.password = requestDto.getPassword();
      }
 }
