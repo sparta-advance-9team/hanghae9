@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
      List<Article> findAllByOrderByCreatedAtDesc();
-     Optional<Article> findByIdAndPassword(Long id, String password);
-     Boolean existsByIdAndPassword(Long id, String password);
+     boolean existsByIdAndUsername(Long id, String username);
 }
