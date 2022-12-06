@@ -20,11 +20,11 @@ public class User {
      private Long id;
      
      @Column (nullable = false, unique = true)
-     @Pattern(regexp = "[a-z0-9]{4,10}")
+     @Pattern(regexp = "^(?=.*?[a-z])(?=.*?[0-9]).{4,10}$")
      private String username;
      
      @Column(nullable = false)
-     @Pattern(regexp = "[a-zA-Z0-9]{8,15}") //Todo 추가필요
+     @Pattern(regexp = "^(?=.*?[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$") //Todo 추가필요
      private String password;
      
      @Column(nullable = false)

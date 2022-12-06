@@ -1,9 +1,6 @@
 package com.sparta.hanghaestartproject.service;
 
-import com.sparta.hanghaestartproject.dto.ArticleRequestDto;
-import com.sparta.hanghaestartproject.dto.ArticleResponseDto;
-import com.sparta.hanghaestartproject.dto.ResonseImpl;
-import com.sparta.hanghaestartproject.dto.ResponseDto;
+import com.sparta.hanghaestartproject.dto.*;
 import com.sparta.hanghaestartproject.entity.Article;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
@@ -82,7 +79,7 @@ public class ArticleService {
      }
      
      @Transactional
-     public ResonseImpl deleteArticle(Long id, HttpServletRequest request) {
+     public ResponseDto deleteArticle(Long id, HttpServletRequest request) {
           User user = getUser(request);
           // 토큰이 있는 경우에만 관심상품 추가 가능
           if (user == null) return ResponseDto.fail(msg, 400);
@@ -125,5 +122,6 @@ public class ArticleService {
                return null;
           }
      }
+     
 }
 
