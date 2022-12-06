@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -26,6 +28,9 @@ public class Article extends Timestamped{
      @ManyToOne
      @JoinColumn(name="user_id")
      private User user;
+     
+     @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+     private List<Comment> comments = new ArrayList<>();
      
      public Article(ArticleRequestDto requestDto, String username){
           this.title = requestDto.getTitle();
