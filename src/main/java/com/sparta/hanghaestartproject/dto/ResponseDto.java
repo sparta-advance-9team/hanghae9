@@ -3,12 +3,11 @@ package com.sparta.hanghaestartproject.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseDto<T> implements ResonseImpl{
+public class ResponseDto<T> implements ResponseImpl {
      private String msg;
      private int statusCode;
      

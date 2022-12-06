@@ -49,10 +49,10 @@ public class UserService {
           String password = loginRequestDto.getPassword();
      
           // 사용자 확인
-          User user = userRepository.findByUsername(username).get();
-          if(user==null){
+          if(!userRepository.existsByUsername(username)){
                return ResponseDto.fail("회원을 찾을 수 없습니다.", 400);
-          }
+          };
+          User user = userRepository.findByUsername(username).get();
           // 비밀번호 확인
           if(!user.getPassword().equals(password)){
                return ResponseDto.fail("비밀번호가 일치하지 않습니다.", 400);

@@ -1,13 +1,12 @@
 package com.sparta.hanghaestartproject.dto;
 
-import com.sparta.hanghaestartproject.entity.Article;
 import com.sparta.hanghaestartproject.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class CommentResponseDto implements ResonseImpl{
+public class CommentResponseDto implements ResponseImpl {
      private Long id;
      private LocalDateTime createdAt;
      private LocalDateTime modifiedAt;

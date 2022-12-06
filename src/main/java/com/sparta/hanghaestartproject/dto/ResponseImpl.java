@@ -1,4 +1,4 @@
 package com.sparta.hanghaestartproject.dto;
 
-public interface ResonseImpl<T,ResponseDto> {
+public interface ResponseImpl<T,ResponseDto> {
 }
