@@ -3,6 +3,7 @@ package com.sparta.hanghaestartproject.service;
 import com.sparta.hanghaestartproject.dto.LoginRequestDto;
 import com.sparta.hanghaestartproject.dto.SignupRequestDto;
 import com.sparta.hanghaestartproject.entity.User;
+import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ public class UserService {
      
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
+     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+     
      public void signup(SignupRequestDto signupRequestDto) {
           String username = signupRequestDto.getUsername();
           String password = signupRequestDto.getPassword();
@@ -26,7 +29,14 @@ public class UserService {
           if (found.isPresent()) {
                throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
           }
-          User user = new User(username, password);
+          UserRoleEnum role = UserRoleEnum.USER;
+          if(signupRequestDto.isAdmin()){
+               if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+                    throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+               }
+               role = UserRoleEnum.ADMIN;
+          }
+          User user = new User(username, password, role);
      
           userRepository.save(user);
      }

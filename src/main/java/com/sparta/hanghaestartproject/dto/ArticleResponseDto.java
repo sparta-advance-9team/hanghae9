@@ -6,13 +6,14 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ArticleResponseDto {
+public class ArticleResponseDto implements ResonseImpl{
      private Long id;
      private LocalDateTime createdAt;
      private LocalDateTime modifiedAt;
      private String title;
      private String username;
      private String content;
+     
      
      public ArticleResponseDto(Article entity){
           this.id = entity.getId();
