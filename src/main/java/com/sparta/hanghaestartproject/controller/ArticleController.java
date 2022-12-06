@@ -27,14 +27,14 @@ public class ArticleController {
      //- 제목, 작성자명(username), 작성 내용을 저장하고
      //- 저장된 게시글을 Client 로 반환하기
      @PostMapping("/api/article")
-     public ArticleResponseDto createArticle(@RequestBody ArticleRequestDto requestDto, HttpServletRequest request){
+     public ResonseImpl<ArticleResponseDto, ResponseDto> createArticle(@RequestBody ArticleRequestDto requestDto, HttpServletRequest request){
           return articleService.createArticle(requestDto, request);
      }
      // 선택한 게시글 조회 API
      // 선택한 게시글의 제목, 작성자명(username), 작성 날짜, 작성 내용을 조회하기
      //(검색 기능이 아닙니다. 간단한 게시글 조회만 구현해주세요.)
      @GetMapping("/api/article/{id}")
-     public ArticleResponseDto getArticle(@PathVariable Long id){
+     public ResonseImpl<ArticleResponseDto, ResponseDto> getArticle(@PathVariable Long id){
           return articleService.getArticle(id);
      }
      

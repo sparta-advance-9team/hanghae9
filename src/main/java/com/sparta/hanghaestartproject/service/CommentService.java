@@ -31,7 +31,7 @@ public class CommentService {
      public ResonseImpl<CommentResponseDto, ResponseDto> createComment
           (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
           User user = getUser(request);
-          if (user == null) throw new IllegalArgumentException("Token 이 존재하지 않습니다.");
+          if (user == null) return ResponseDto.fail("토큰이 유효하지 않습니다.", 400);
           if(articleRepository.existsById(id)){
                Comment comment = new Comment(requestDto, user.getUsername());
                comment.setArticle(articleRepository.findById(id).get());

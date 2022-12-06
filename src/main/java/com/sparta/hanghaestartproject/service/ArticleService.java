@@ -38,9 +38,9 @@ public class ArticleService {
      }
      
      @Transactional
-     public ArticleResponseDto createArticle(ArticleRequestDto requestDto, HttpServletRequest request) {
+     public ResonseImpl<ArticleResponseDto, ResponseDto> createArticle(ArticleRequestDto requestDto, HttpServletRequest request) {
           User user = getUser(request);
-          if (user == null) throw new IllegalArgumentException("Token 이 존재하지 않습니다.");
+          if (user == null) return ResponseDto.fail("토큰이 유효하지 않습니다.", 400);
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Article article = new Article(requestDto, user.getUsername()); // ArticleRequestDto >> Article
           article = articleRepository.save(article);
@@ -49,10 +49,9 @@ public class ArticleService {
      }
      
      @Transactional (readOnly = true)
-     public ArticleResponseDto getArticle(Long id) {
-          Article article = articleRepository.findById(id).orElseThrow(
-               () -> new IllegalArgumentException("게시글이 존재하지 않습니다.")
-          );
+     public ResonseImpl<ArticleResponseDto, ResponseDto> getArticle(Long id) {
+          Article article = articleRepository.findById(id).get();
+          if(article==null) return ResponseDto.fail("게시글이 존재하지 않습니다.", 400);
           return new ArticleResponseDto(article);
      }
      
