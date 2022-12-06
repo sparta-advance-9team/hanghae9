@@ -6,17 +6,17 @@ import com.sparta.hanghaestartproject.dto.ResonseImpl;
 import com.sparta.hanghaestartproject.dto.ResponseDto;
 import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.User;
+import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.ArticleRepository;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.http.HttpResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +28,7 @@ public class CommentService {
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
+     @Transactional
      public ResonseImpl<CommentResponseDto, ResponseDto> createComment
           (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
           User user = getUser(request);
@@ -42,7 +43,23 @@ public class CommentService {
 //               return ResponseDto.fail("게시글이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
           }
      }
-     
+     @Transactional
+     public ResonseImpl<CommentResponseDto, ResponseDto> updateComment
+          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
+          User user = getUser(request);
+          if (user == null) return ResponseDto.fail("토큰이 유효하지 않습니다.", 400);
+          if(!commentRepository.existsById(id)){
+               return ResponseDto.fail("댓글이 존재하지 않습니다.", 400);
+          }
+          Comment comment = commentRepository.findById(id).get();
+          if(user.getRole().equals(UserRoleEnum.USER)){
+               if(!comment.getUsername().equals(user.getUsername())){
+                    return ResponseDto.fail("작성자만 삭제/수정할 수 있습니다.", 400);
+               }
+          }
+          comment.update(requestDto);
+          return new CommentResponseDto(comment);
+     }
      private User getUser(HttpServletRequest request) {
           // Request에서 Token 가져오기
           String token = jwtUtil.resolveToken(request);
@@ -69,4 +86,6 @@ public class CommentService {
                return null;
           }
      }
+     
+     
 }

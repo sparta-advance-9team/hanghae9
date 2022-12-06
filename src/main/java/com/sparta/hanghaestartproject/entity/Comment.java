@@ -11,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Comment extends Timestamped {
      @Id
-     @GeneratedValue (strategy = GenerationType.AUTO)
+     @GeneratedValue (strategy = GenerationType.IDENTITY)
      private Long id;
      
      @Column (nullable = false)
@@ -32,5 +32,9 @@ public class Comment extends Timestamped {
      public void setArticle(Article article){
           this.article = article;
           article.getComments().add(this);
+     }
+     
+     public void update(CommentRequestDto requestDto) {
+          this.content =  requestDto.getContent();
      }
 }
