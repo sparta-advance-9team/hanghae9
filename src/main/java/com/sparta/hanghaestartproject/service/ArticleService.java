@@ -2,6 +2,7 @@ package com.sparta.hanghaestartproject.service;
 
 import com.sparta.hanghaestartproject.dto.*;
 import com.sparta.hanghaestartproject.entity.Article;
+import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,11 @@ public class ArticleService {
      
      @Transactional (readOnly = true)
      public List<ArticleResponseDto> getArticles() {
+          for(Article ar : articleRepository.findAllByOrderByCreatedAtDesc()){
+               for(Comment cm : ar.getCommentList()){
+                    System.out.println("Article id : " + ar.getId() + " || comment id :" + cm.getId());
+               }
+          }
           return articleRepository.findAllByOrderByCreatedAtDesc().stream()
                .map(ArticleResponseDto::new) // Article >> ArticleResponseDto 로 타입변환
                .collect(Collectors.toList()); // 다시 List로 묶은거

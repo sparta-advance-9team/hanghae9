@@ -30,7 +30,7 @@ public class Article extends Timestamped{
      private User user;
      
      @OneToMany(mappedBy = "article", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-     private List<Comment> comments = new ArrayList<>();
+     private List<Comment> commentList = new ArrayList<>();
      
      public Article(ArticleRequestDto requestDto, String username){
           this.title = requestDto.getTitle();
@@ -46,5 +46,10 @@ public class Article extends Timestamped{
      public void setUser(User user) {
           this.user = user;
           user.getArticles().add(this);
+     }
+     
+     public void addComment(Comment comment){
+          this.commentList.add(comment);
+          comment.updateArticle(this);
      }
 }

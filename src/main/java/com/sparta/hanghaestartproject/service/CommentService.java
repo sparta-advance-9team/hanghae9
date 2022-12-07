@@ -3,7 +3,6 @@ package com.sparta.hanghaestartproject.service;
 import com.sparta.hanghaestartproject.dto.CommentRequestDto;
 import com.sparta.hanghaestartproject.dto.CommentResponseDto;
 import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
-import com.sparta.hanghaestartproject.dto.ResponseImpl;
 import com.sparta.hanghaestartproject.entity.Article;
 import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.User;
@@ -39,7 +38,7 @@ public class CommentService {
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
           Comment comment = new Comment(requestDto, user.getUsername());
-          comment.setArticle(article);
+          comment.updateArticle(article);
           commentRepository.save(comment);
           return new CommentResponseDto(comment);
           

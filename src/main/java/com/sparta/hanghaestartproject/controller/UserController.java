@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping ("/api/user")
@@ -15,13 +16,13 @@ public class UserController {
      private final UserService userService;
      
      @PostMapping ("/signup")
-     public CompleteResponseDto signup(@RequestBody SignupRequestDto signupRequestDto) {
+     public CompleteResponseDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
           return userService.signup(signupRequestDto);
      }
      
      @ResponseBody
      @PostMapping("/login")
-     public CompleteResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
+     public CompleteResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
           return userService.login(loginRequestDto, response);
      }
 }

@@ -29,9 +29,8 @@ public class Comment extends Timestamped {
           this.content = requestDto.getContent();
      }
      
-     public void setArticle(Article article){
+     public void updateArticle(Article article){
           this.article = article;
-          article.getComments().add(this);
      }
      
      public void update(CommentRequestDto requestDto) {
