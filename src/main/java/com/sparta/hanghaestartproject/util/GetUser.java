@@ -27,6 +27,7 @@ public class GetUser {
                if (jwtUtil.validateToken(token)) {
                     // 토큰에서 사용자 정보 가져오기
                     claims = jwtUtil.getUserInfoFromToken(token);
+                    System.out.println(">>>>>>>>>>>>>>"+claims.get("auth"));
                } else {
                     throw new RestApiException(UserErrorCode.INVALID_TOKEN);
                }

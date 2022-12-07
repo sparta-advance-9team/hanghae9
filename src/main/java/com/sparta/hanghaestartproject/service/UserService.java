@@ -59,7 +59,7 @@ public class UserService {
           if(!user.getPassword().equals(password)){
                throw new RestApiException(UserErrorCode.WRONG_PASSWORD);
           }
-          response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername())); // getRole();
+          response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), UserRoleEnum.USER)); // getRole();
           return CompleteResponseDto.success("로그인 성공");
      }
 }
