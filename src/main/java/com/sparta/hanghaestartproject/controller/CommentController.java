@@ -3,7 +3,7 @@ package com.sparta.hanghaestartproject.controller;
 import com.sparta.hanghaestartproject.dto.CommentRequestDto;
 import com.sparta.hanghaestartproject.dto.CommentResponseDto;
 import com.sparta.hanghaestartproject.dto.ResponseImpl;
-import com.sparta.hanghaestartproject.dto.ResponseDto;
+import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
 import com.sparta.hanghaestartproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class CommentController {
      private final CommentService commentService;
      
      @PostMapping("/api/comment/{id}")
-     public ResponseImpl<CommentResponseDto, ResponseDto> createComment(
+     public CommentResponseDto createComment(
                @PathVariable Long id, // article Id
                @RequestBody CommentRequestDto requestDto,
                HttpServletRequest request){
@@ -24,7 +24,7 @@ public class CommentController {
      }
      
      @PutMapping("/api/comment/{id}")
-     public ResponseImpl<CommentResponseDto, ResponseDto> updateComment(
+     public CommentResponseDto updateComment(
           @PathVariable Long id, // commentId
           @RequestBody CommentRequestDto requestDto,
           HttpServletRequest request){
@@ -32,7 +32,7 @@ public class CommentController {
      }
      
      @DeleteMapping("/api/comment/{id}")
-     public ResponseDto deleteComment(
+     public CompleteResponseDto deleteComment(
           @PathVariable Long id, // commentId
           @RequestBody CommentRequestDto requestDto,
           HttpServletRequest request){
