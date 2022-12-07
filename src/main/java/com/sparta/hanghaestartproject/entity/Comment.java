@@ -20,7 +20,7 @@ public class Comment extends Timestamped {
      @Column (nullable = false)
      private String content;
      
-     @ManyToOne
+     @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name="article_id")
      private Article article;
      

@@ -31,7 +31,7 @@ public class User {
      @Enumerated(value = EnumType.STRING)
      private UserRoleEnum role;
      
-     @OneToMany(mappedBy = "user", fetch=FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval=true)
+     @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
      private List<Article> articles = new ArrayList<>();
      
      public User(String username, String password, UserRoleEnum role) {
