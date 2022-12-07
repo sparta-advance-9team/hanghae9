@@ -30,11 +30,6 @@ public class ArticleService {
      
      @Transactional (readOnly = true)
      public List<ArticleResponseDto> getArticles() {
-          for(Article ar : articleRepository.findAllByOrderByCreatedAtDesc()){
-               for(Comment cm : ar.getCommentList()){
-                    System.out.println("Article id : " + ar.getId() + " || comment id :" + cm.getId());
-               }
-          }
           return articleRepository.findAllByOrderByCreatedAtDesc().stream()
                .map(ArticleResponseDto::new) // Article >> ArticleResponseDto 로 타입변환
                .collect(Collectors.toList()); // 다시 List로 묶은거

@@ -41,7 +41,6 @@ public class CommentService {
           comment.updateArticle(article);
           commentRepository.save(comment);
           return new CommentResponseDto(comment);
-          
      }
      
      @Transactional

@@ -30,6 +30,4 @@ public class ArticleResponseDto{
           this.comments = entity.getCommentList().stream()
                .map(CommentResponseDto::new).collect(Collectors.toList());
      }
-     
-     
 }
