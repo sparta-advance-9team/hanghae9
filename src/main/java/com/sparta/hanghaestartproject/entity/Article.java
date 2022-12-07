@@ -25,7 +25,7 @@ public class Article extends Timestamped{
      @Column (nullable = false)
      private String content;
      
-     @ManyToOne
+     @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name="user_id")
      private User user;
      
