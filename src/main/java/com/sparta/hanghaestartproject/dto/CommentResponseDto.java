@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class CommentResponseDto implements ResponseImpl {
+public class CommentResponseDto{
      private Long id;
      private LocalDateTime createdAt;
      private LocalDateTime modifiedAt;
