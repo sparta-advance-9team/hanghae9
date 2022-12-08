@@ -60,7 +60,7 @@ public class CommentService {
      }
      
      public CompleteResponseDto deleteComment
-          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
+          (Long id, HttpServletRequest request) {
           User user = getUser.getUser(request);
           
           Comment comment = commentRepository.findById(id)

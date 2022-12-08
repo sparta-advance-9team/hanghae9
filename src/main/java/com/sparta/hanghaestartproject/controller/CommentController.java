@@ -34,9 +34,8 @@ public class CommentController {
      @DeleteMapping("/api/comment/{id}")
      public CompleteResponseDto deleteComment(
           @PathVariable Long id, // commentId
-          @RequestBody CommentRequestDto requestDto,
           HttpServletRequest request){
-          return commentService.deleteComment(id, requestDto, request);
+          return commentService.deleteComment(id, request);
      }
      
      
