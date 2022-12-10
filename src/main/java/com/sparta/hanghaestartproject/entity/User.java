@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +28,8 @@ public class User {
      @Enumerated(value = EnumType.STRING)
      private UserRoleEnum role;
      
-     @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
-     private List<Article> articles = new ArrayList<>();
+//     @OneToMany(mappedBy = "user", fetch=FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+//     private List<Post> posts = new ArrayList<>();
      
      public User(String username, String password, UserRoleEnum role) {
           this.username = username;

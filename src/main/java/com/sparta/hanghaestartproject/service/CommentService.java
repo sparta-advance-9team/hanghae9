@@ -3,14 +3,14 @@ package com.sparta.hanghaestartproject.service;
 import com.sparta.hanghaestartproject.dto.CommentRequestDto;
 import com.sparta.hanghaestartproject.dto.CommentResponseDto;
 import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
-import com.sparta.hanghaestartproject.entity.Article;
+import com.sparta.hanghaestartproject.entity.Post;
 import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
-import com.sparta.hanghaestartproject.repository.ArticleRepository;
+import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentService {
      
      private final GetUser getUser;
-     private final ArticleRepository articleRepository;
+     private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
@@ -34,11 +34,11 @@ public class CommentService {
      public CommentResponseDto createComment // id : 게시글 id
           (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
           User user = getUser.getUser(request);
-          Article article =articleRepository.findById(id)
+          Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
           Comment comment = new Comment(requestDto, user.getUsername());
-          comment.updateArticle(article);
+          comment.updatePost(post);
           commentRepository.save(comment);
           return new CommentResponseDto(comment);
      }

@@ -1,7 +1,6 @@
 package com.sparta.hanghaestartproject.dto;
 
-import com.sparta.hanghaestartproject.entity.Article;
-import com.sparta.hanghaestartproject.entity.Comment;
+import com.sparta.hanghaestartproject.entity.Post;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-public class ArticleResponseDto{
+public class PostResponseDto {
      private Long id;
      private LocalDateTime createdAt;
      private LocalDateTime modifiedAt;
@@ -20,7 +19,7 @@ public class ArticleResponseDto{
      
      private List<CommentResponseDto> comments = new ArrayList<>();
      
-     public ArticleResponseDto(Article entity){
+     public PostResponseDto(Post entity){
           this.id = entity.getId();
           this.createdAt = entity.getCreatedAt();
           this.modifiedAt = entity.getModifiedAt();
