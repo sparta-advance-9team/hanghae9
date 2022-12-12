@@ -1,5 +1,6 @@
 package com.sparta.hanghaestartproject.dto;
 
+import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.Post;
 import lombok.Getter;
 
@@ -28,5 +29,6 @@ public class PostResponseDto {
           this.content = entity.getContent();
           this.comments = entity.getCommentList().stream()
                .map(CommentResponseDto::new).collect(Collectors.toList());
+//          this.comments = entity.getCommentList();
      }
 }

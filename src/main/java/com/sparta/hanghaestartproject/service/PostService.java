@@ -48,7 +48,6 @@ public class PostService {
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
           return new PostResponseDto(post);
-          
      }
      
      //- 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 게시글만 수정 가능
