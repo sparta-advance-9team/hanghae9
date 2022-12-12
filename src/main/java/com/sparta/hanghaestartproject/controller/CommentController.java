@@ -2,18 +2,20 @@ package com.sparta.hanghaestartproject.controller;
 
 import com.sparta.hanghaestartproject.dto.CommentRequestDto;
 import com.sparta.hanghaestartproject.dto.CommentResponseDto;
-import com.sparta.hanghaestartproject.dto.ResponseImpl;
 import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
 import com.sparta.hanghaestartproject.service.CommentService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequiredArgsConstructor
 public class CommentController {
+     
      private final CommentService commentService;
+     
+     public CommentController(CommentService commentService){
+          this.commentService = commentService;
+     }
      
      @PostMapping("/api/comment/{id}")
      public CommentResponseDto createComment(

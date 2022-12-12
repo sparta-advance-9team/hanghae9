@@ -21,14 +21,20 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-@RequiredArgsConstructor
 public class CommentService {
-     
      private final GetUser getUser;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
+     
+     public CommentService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil){
+          this.getUser = getUser;
+          this.postRepository = postRepository;
+          this.commentRepository = commentRepository;
+          this.userRepository = userRepository;
+          this.jwtUtil = jwtUtil;
+     }
      
      @Transactional
      public CommentResponseDto createComment // id : 게시글 id
