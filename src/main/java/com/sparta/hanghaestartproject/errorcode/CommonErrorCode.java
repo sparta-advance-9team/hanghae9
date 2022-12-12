@@ -1,11 +1,7 @@
 package com.sparta.hanghaestartproject.errorcode;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@RequiredArgsConstructor
 public enum CommonErrorCode implements ErrorCode {
      
      INVALID_PARAMETER("Invalid parameter included",HttpStatus.BAD_REQUEST.value()),
@@ -16,4 +12,19 @@ public enum CommonErrorCode implements ErrorCode {
      
      private final String msg;
      private final int statusCode;
+     
+     @Override
+     public String getMsg() {
+          return msg;
+     }
+     
+     @Override
+     public int getStatusCode() {
+          return statusCode;
+     }
+     
+     CommonErrorCode(String msg, int statusCode) {
+          this.msg = msg;
+          this.statusCode = statusCode;
+     }
 }

@@ -1,16 +1,14 @@
 package com.sparta.hanghaestartproject.entity;
 
 import com.sparta.hanghaestartproject.dto.CommentRequestDto;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-@Getter
 @Entity
-@NoArgsConstructor
 public class Comment extends Timestamped {
      @Id
      @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -27,7 +25,7 @@ public class Comment extends Timestamped {
      private Post post;
      
      @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-     private List<LikeComment> likeCommentList = new ArrayList<>();
+     private Set<LikeComment> likeCommentList = new HashSet<>();
      
      public Comment(CommentRequestDto requestDto, String username) {
           this.username = username;
@@ -40,5 +38,28 @@ public class Comment extends Timestamped {
      
      public void update(CommentRequestDto requestDto) {
           this.content =  requestDto.getContent();
+     }
+     
+     public Comment() {
+     }
+     
+     public Long getId() {
+          return id;
+     }
+     
+     public String getUsername() {
+          return username;
+     }
+     
+     public String getContent() {
+          return content;
+     }
+     
+     public Post getPost() {
+          return post;
+     }
+     
+     public Set<LikeComment> getLikeCommentList() {
+          return likeCommentList;
      }
 }
