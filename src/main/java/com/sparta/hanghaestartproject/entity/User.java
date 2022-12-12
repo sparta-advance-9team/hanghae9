@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 // @Getter의 역할.. get메소드를 대신 생성해준다. 32~46줄 참조
 // @NoArgsConstructor의 역할.. 매개변수가 없는 기본 생성자를 대신 생성해준다. 15줄 참조
-//.
 @Entity (name = "users")
 public class User {
      //- username은  `최소 4자 이상, 10자 이하이며 알파벳 소문자(a~z), 숫자(0~9)`로 구성되어야 한다.
