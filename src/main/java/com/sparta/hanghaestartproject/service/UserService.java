@@ -9,29 +9,22 @@ import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
-//@RequiredArgsConstructor의 역할.. final이 붙거나 @NotNull 이 붙은 필드의 생성자를 자동으로 생성해준다. 30~33줄 참고
+@RequiredArgsConstructor
 public class UserService {
-
      static String msg;
      static int statusCode = 400;
      
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
-
      private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
-
-     public UserService(UserRepository userRepository, JwtUtil jwtUtil) {
-          this.userRepository = userRepository;
-          this.jwtUtil = jwtUtil;
-     }
-
-
+     
      public CompleteResponseDto signup(SignupRequestDto signupRequestDto) {
           String username = signupRequestDto.getUsername();
           String password = signupRequestDto.getPassword();
