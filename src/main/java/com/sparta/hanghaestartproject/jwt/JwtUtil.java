@@ -1,11 +1,15 @@
 package com.sparta.hanghaestartproject.jwt;
 
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
+import com.sparta.hanghaestartproject.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -18,6 +22,7 @@ import java.util.Date;
 @Slf4j
 @Component
 public class JwtUtil {
+     private final UserDetailsServiceImpl userDetailsService;
      
      // Header KEY 값
      public static final String AUTHORIZATION_HEADER = "Authorization";
@@ -28,7 +33,10 @@ public class JwtUtil {
      // 토큰 만료시간
      private static final long TOKEN_TIME = 60 * 60 * 1000L;
      
-     public JwtUtil() {}
+     //생성자
+     public JwtUtil(UserDetailsServiceImpl userDetailsService){
+          this.userDetailsService = userDetailsService;
+     }
      
      @Value ("${jwt.secret.key}")
      private String secretKey;
@@ -84,5 +92,11 @@ public class JwtUtil {
      // 토큰에서 사용자 정보 가져오기
      public Claims getUserInfoFromToken(String token) {
           return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+     }
+     
+     // 인증 객체 생성
+     public Authentication createAuthentication(String username) {
+          UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+          return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
      }
 }

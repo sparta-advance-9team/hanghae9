@@ -9,7 +9,9 @@ import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
@@ -22,19 +24,21 @@ public class UserService {
      static int statusCode = 400;
      
      private final UserRepository userRepository;
+     private final PasswordEncoder passwordEncoder;
      private final JwtUtil jwtUtil;
 
      private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-     public UserService(UserRepository userRepository, JwtUtil jwtUtil) {
+     public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
           this.userRepository = userRepository;
+          this.passwordEncoder = passwordEncoder;
           this.jwtUtil = jwtUtil;
      }
-
-
+     
+     @Transactional
      public CompleteResponseDto signup(SignupRequestDto signupRequestDto) {
           String username = signupRequestDto.getUsername();
-          String password = signupRequestDto.getPassword();
+          String password = passwordEncoder.encode(signupRequestDto.getPassword());
      
           // 회원 중복 확인
           Optional<User> found = userRepository.findByUsername(username);
@@ -52,18 +56,17 @@ public class UserService {
           userRepository.save(user);
           return CompleteResponseDto.success("회원가입 성공");
      }
-     
+     @Transactional (readOnly = true)
      public CompleteResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
           String username = loginRequestDto.getUsername();
           String password = loginRequestDto.getPassword();
      
           // 사용자 확인
-          if(!userRepository.existsByUsername(username)){
-               throw new RestApiException(UserErrorCode.NO_USER);
-          };
-          User user = userRepository.findByUsername(username).get();
+          User user = userRepository.findByUsername(username).orElseThrow(
+               () -> new RestApiException(UserErrorCode.NO_USER)
+          );
           // 비밀번호 확인
-          if(!user.getPassword().equals(password)){
+          if(!passwordEncoder.matches(password, user.getPassword())){
                throw new RestApiException(UserErrorCode.WRONG_PASSWORD);
           }
           response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole())); // getRole();
