@@ -17,6 +17,7 @@ public class PostResponseDto {
      private String title;
      private String username;
      private String content;
+     private String category;
      
      private List<CommentResponseDto> comments = new ArrayList<>();
      

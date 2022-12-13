@@ -1,7 +1,6 @@
 package com.sparta.hanghaestartproject.dto;
 
 import com.sparta.hanghaestartproject.entity.Comment;
-import lombok.Getter;
 
 import java.time.LocalDateTime;
 

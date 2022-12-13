@@ -21,11 +21,14 @@ public class Post extends Timestamped{
      
      @Column (nullable = false)
      private String username;
-     
+
      @Column (nullable = false)
      private String content;
-     
-//     @ManyToOne(fetch = FetchType.LAZY)
+
+     @ManyToMany
+     @JoinColumn(name = "category_id")
+     private List<Category> categories = new ArrayList<>();
+     //     @ManyToOne(fetch = FetchType.LAZY)
 //     @JoinColumn(name="user_id")
 //     private User user;
      @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
