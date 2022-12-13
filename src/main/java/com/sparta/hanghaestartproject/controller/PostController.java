@@ -18,8 +18,13 @@ public class PostController {
      //- 제목, 작성자명(username), 작성 내용, 작성 날짜를 조회하기
      //- 작성 날짜 기준 내림차순으로 정렬하기
      @GetMapping("/api/posts")
-     public List<PostResponseDto> getPosts(){
-          return postService.getPosts();
+     public List<PostResponseDto> getPosts(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value="size", defaultValue = "5") int size,
+          @RequestParam(value="sortBy", defaultValue = "createdAt") String sortBy,
+          @RequestParam(value="isAsc", defaultValue = "false") boolean isAsc // 오름차순인가
+     ){ // page : zero-based page index 로 들어감 >> -1 필요
+          return postService.getPosts(page-1, size, sortBy, isAsc);
      }
      
      // 게시글 작성 API

@@ -11,6 +11,9 @@ import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,16 +22,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
      private final GetUser getUser;
      private final PostRepository postRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
      
+     PostService(GetUser getUser, PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil){
+          this.getUser = getUser;
+          this.postRepository = postRepository;
+          this.userRepository = userRepository;
+          this.jwtUtil = jwtUtil;
+     }
+     
      @Transactional (readOnly = true)
-     public List<PostResponseDto> getPosts() {
-          return postRepository.findAllByOrderByCreatedAtDesc().stream()
+     public List<PostResponseDto> getPosts(int page, int size, String sortBy, boolean isAsc) {
+          // 페이징 처리
+          Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC; // Direction : Sort 안의 ENUM. ASC or DESC
+          Sort sort = Sort.by(direction, sortBy);
+          Pageable pageable = PageRequest.of(page, size, sort); // page : zero-based page index, size : the size of the page to be returned,
+          return postRepository.findAllByOrderByCreatedAtDesc(pageable).stream()
                .map(PostResponseDto::new) // Post >> PostResponseDto 로 타입변환
                .collect(Collectors.toList()); // 다시 List로 묶은거
      }
