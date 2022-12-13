@@ -18,8 +18,13 @@ public class PostController {
      //- 제목, 작성자명(username), 작성 내용, 작성 날짜를 조회하기
      //- 작성 날짜 기준 내림차순으로 정렬하기
      @GetMapping("/api/posts")
-     public List<PostResponseDto> getPosts(){
-          return postService.getPosts();
+     public List<PostResponseDto> getPosts(
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value="size", defaultValue = "5") int size,
+          @RequestParam(value="sortBy", defaultValue = "createdAt") String sortBy,
+          @RequestParam(value="isAsc", defaultValue = "false") boolean isAsc // 오름차순인가
+     ){ // page : zero-based page index 로 들어감 >> -1 필요
+          return postService.getPosts(page-1, size, sortBy, isAsc);
      }
      
      // 게시글 작성 API
@@ -34,8 +39,13 @@ public class PostController {
      // 선택한 게시글의 제목, 작성자명(username), 작성 날짜, 작성 내용을 조회하기
      //(검색 기능이 아닙니다. 간단한 게시글 조회만 구현해주세요.)
      @GetMapping("/api/post/{id}")
-     public PostResponseDto getPost(@PathVariable Long id){
-          return postService.getPost(id);
+     public PostResponseDto getPost(@PathVariable Long id,
+          @RequestParam(value = "page", defaultValue = "1") int page,
+          @RequestParam(value="size", defaultValue = "5") int size,
+          @RequestParam(value="sortBy", defaultValue = "createdAt") String sortBy,
+          @RequestParam(value="isAsc", defaultValue = "false") boolean isAsc // 오름차순인가
+     ){
+          return postService.getPost(id, page-1, size, sortBy, isAsc);// page : zero-based page index 로 들어감 >> -1 필요
      }
      
      // 선택한 게시글 수정

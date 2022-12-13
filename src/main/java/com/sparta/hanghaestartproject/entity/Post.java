@@ -45,10 +45,9 @@ public class Post extends Timestamped{
           this.content = requestDto.getContent();
      }
      
-//     public void setUser(User user) {
-//          this.user = user;
-//          user.getPosts().add(this);
-//     }
+     public void setCommentList(List<Comment> commentList){
+          this.commentList = commentList;
+     }
      
      public void addComment(Comment comment){
           this.commentList.add(comment);
