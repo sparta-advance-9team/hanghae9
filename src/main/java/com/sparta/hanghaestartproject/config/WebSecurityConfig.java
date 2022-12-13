@@ -1,6 +1,7 @@
 package com.sparta.hanghaestartproject.config;
 
 import com.sparta.hanghaestartproject.handler.CustomAccessDeniedHandler;
+import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.security.CustomAuthenticationEntryPoint;
 import com.sparta.hanghaestartproject.security.CustomSecurityFilter;
 import com.sparta.hanghaestartproject.security.UserDetailsServiceImpl;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,18 +23,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity (securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
      
+     private final JwtUtil jwtUtil;
      private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
      private final CustomAccessDeniedHandler customAccessDeniedHandler;
-     
      private final UserDetailsServiceImpl userDetailsService;
      
      // RequiredArgsConstructor
-     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService,
+     public WebSecurityConfig(
+                              UserDetailsServiceImpl userDetailsService,
                               CustomAuthenticationEntryPoint customAuthenticationEntryPoint,
-                              CustomAccessDeniedHandler customAccessDeniedHandler){
+                              CustomAccessDeniedHandler customAccessDeniedHandler,
+                              JwtUtil jwtUtil){
           this.userDetailsService = userDetailsService;
           this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
           this.customAccessDeniedHandler = customAccessDeniedHandler;
+          this.jwtUtil = jwtUtil;
      }
      
      @Bean // 비밀번호 암호화 기능 등록
@@ -53,27 +58,31 @@ public class WebSecurityConfig {
           // CSRF 설정
           http.csrf().disable();
      
+          // 기본 설정인 Session 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
+          http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+     
           // todo 수정필요
-          http.authorizeRequests().antMatchers("/api/user/**").permitAll()
-               .antMatchers("/api/search").permitAll()
-               .antMatchers("/api/shop").permitAll()
+          http.authorizeRequests()
+               .antMatchers("/api/user/**").permitAll()
+               .antMatchers("/api/post/**").permitAll()
+               .antMatchers("/api/comment/**").permitAll()
                .anyRequest().authenticated();
 
           // Custom 로그인 페이지 사용
           http.formLogin().loginPage("/api/user/login-page").permitAll();
           
-          // Custom Filter 등록하기
-          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
-     
+//          // Custom Filter 등록하기
+//          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
+//
           // 접근 제한 페이지 이동 설정
-          // http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
-     
-          // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-          http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-     
-          // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
-          http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
-     
+          http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
+//
+//          // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
+//          http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+//
+//          // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
+//          http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
+//
           return http.build();
      }
 

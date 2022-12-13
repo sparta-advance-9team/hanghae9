@@ -38,8 +38,7 @@ public class CommentService {
      
      @Transactional
      public CommentResponseDto createComment // id : 게시글 id
-          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+          (Long id, CommentRequestDto requestDto, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
