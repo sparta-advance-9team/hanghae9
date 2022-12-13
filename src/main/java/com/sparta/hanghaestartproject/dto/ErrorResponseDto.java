@@ -8,7 +8,6 @@ import org.springframework.validation.FieldError;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 public class ErrorResponseDto {
      
      private final String msg;
@@ -17,6 +16,12 @@ public class ErrorResponseDto {
      //만약 errors가 없다면 이거는 응답으로 내려가지 않도록
      @JsonInclude (JsonInclude.Include.NON_EMPTY)
      private final List<ValidationError> errors;
+     ErrorResponseDto(String msg, int statusCode, List<ValidationError> errors){
+          this.msg = msg;
+          this.statusCode = statusCode;
+          this.errors = errors;
+     }
+     
      
      ////////////////////
      private ErrorResponseDto(ErrorResponseDtoBuilder builder){ // builder로 responsedto 생성.build()에서사용

@@ -30,7 +30,6 @@ public class CustomSecurityFilter extends OncePerRequestFilter {
      
      @Override
      protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-          
           String username = request.getParameter("username");
           String password = request.getParameter("password");
           
