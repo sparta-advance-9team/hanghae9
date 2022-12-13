@@ -9,6 +9,7 @@ import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,19 +23,21 @@ public class UserService {
      static int statusCode = 400;
      
      private final UserRepository userRepository;
+     private final PasswordEncoder passwordEncoder;
      private final JwtUtil jwtUtil;
 
      private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-     public UserService(UserRepository userRepository, JwtUtil jwtUtil) {
+     public UserService(UserRepository userRepository,PasswordEncoder passwordEncoder,JwtUtil jwtUtil) {
           this.userRepository = userRepository;
+          this.passwordEncoder = passwordEncoder;
           this.jwtUtil = jwtUtil;
      }
 
 
      public CompleteResponseDto signup(SignupRequestDto signupRequestDto) {
           String username = signupRequestDto.getUsername();
-          String password = signupRequestDto.getPassword();
+          String password = passwordEncoder.encode(signupRequestDto.getPassword());
      
           // 회원 중복 확인
           Optional<User> found = userRepository.findByUsername(username);

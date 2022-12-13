@@ -40,5 +40,8 @@ public class CommentController {
           return commentService.deleteComment(id, request);
      }
      
+     //@Secured(value = UserRoleEnum.Authority.ADMIN)
+     //    @PostMapping("/test-secured")
+     //    public String securedTest(@AuthenticationPrincipal UserDetails userDetails) {
      
 }
