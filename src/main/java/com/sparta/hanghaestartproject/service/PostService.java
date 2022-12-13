@@ -1,12 +1,14 @@
 package com.sparta.hanghaestartproject.service;
 
 import com.sparta.hanghaestartproject.dto.*;
+import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.Post;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
+import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
@@ -25,12 +27,14 @@ import java.util.stream.Collectors;
 public class PostService {
      private final GetUser getUser;
      private final PostRepository postRepository;
+     private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
      
-     PostService(GetUser getUser, PostRepository postRepository, UserRepository userRepository, JwtUtil jwtUtil){
+     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil){
           this.getUser = getUser;
           this.postRepository = postRepository;
+          this.commentRepository = commentRepository;
           this.userRepository = userRepository;
           this.jwtUtil = jwtUtil;
      }
@@ -56,10 +60,16 @@ public class PostService {
      }
      
      @Transactional (readOnly = true)
-     public PostResponseDto getPost(Long id) {
+     public PostResponseDto getPost(Long id, int page, int size, String sortBy, boolean isAsc) {
+          // 페이징 처리
+          Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC; // Direction : Sort 안의 ENUM. ASC or DESC
+          Sort sort = Sort.by(direction, sortBy);
+          Pageable pageable = PageRequest.of(page, size, sort); // page : zero-based page index, size : the size of the page to be returned,
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
-          
+     
+          List<Comment> commentList = commentRepository.findAllByPostId(id, pageable);
+          post.setCommentList(commentList);
           return new PostResponseDto(post);
      }
      
