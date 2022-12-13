@@ -1,18 +1,26 @@
 package com.sparta.hanghaestartproject.entity;
 
+import lombok.Builder;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
+@Builder
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String category;
+    private CategoryEnum categoryEnum;
 
-    @ManyToMany(mappedBy = "categories")
-    private List<Post> posts = new ArrayList<>();
+    //category(many 갑) post(one 을)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="post_id")
+    private Post post;
+
+    public Category() {
+
+    }
 }

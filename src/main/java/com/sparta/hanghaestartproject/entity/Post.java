@@ -25,12 +25,9 @@ public class Post extends Timestamped{
      @Column (nullable = false)
      private String content;
 
-     @ManyToMany
-     @JoinColumn(name = "category_id")
+     @OneToMany(mappedBy = "post")
      private List<Category> categories = new ArrayList<>();
-     //     @ManyToOne(fetch = FetchType.LAZY)
-//     @JoinColumn(name="user_id")
-//     private User user;
+
      @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
      private List<Comment> commentList = new ArrayList<>();
      
@@ -41,6 +38,14 @@ public class Post extends Timestamped{
           this.title = requestDto.getTitle();
           this.content = requestDto.getContent();
           this.username = username;
+          this.categories = requestDto.getCategories();
+     }
+
+     public Post(PostRequestDto requestDto, String username, List<CategoryEnum> categoryEnums){
+          this.title = requestDto.getTitle();
+          this.content = requestDto.getContent();
+          this.username = username;
+
      }
      
      public void update(PostRequestDto requestDto) {

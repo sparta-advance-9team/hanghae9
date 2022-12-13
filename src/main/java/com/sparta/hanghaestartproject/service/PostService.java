@@ -1,12 +1,11 @@
 package com.sparta.hanghaestartproject.service;
 
 import com.sparta.hanghaestartproject.dto.*;
-import com.sparta.hanghaestartproject.entity.Post;
-import com.sparta.hanghaestartproject.entity.User;
-import com.sparta.hanghaestartproject.entity.UserRoleEnum;
+import com.sparta.hanghaestartproject.entity.*;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
+import com.sparta.hanghaestartproject.repository.CategoryRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +24,7 @@ public class PostService {
      private final GetUser getUser;
      private final PostRepository postRepository;
      private final UserRepository userRepository;
+     private final CategoryRepository categoryRepository;
      private final JwtUtil jwtUtil;
      
      @Transactional (readOnly = true)
@@ -36,9 +37,21 @@ public class PostService {
      @Transactional
      public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest request) {
           User user = getUser.getUser(request);
+          List<CategoryEnum> categoryEnums = requestDto.getCategories();
+          List<Category> categories = new ArrayList<>();
+
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
+
+          for (CategoryEnum all : categoryEnums) {
+               Category category = Category.builder()
+                       .categoryEnum(all)
+                       .post(post)
+                       .build();
+               categories.add(category);
+          }
+          categoryRepository.saveAll();
           return new PostResponseDto(post);
      }
      
