@@ -1,6 +1,7 @@
 package com.sparta.hanghaestartproject.config;
 
 import com.sparta.hanghaestartproject.handler.CustomAccessDeniedHandler;
+import com.sparta.hanghaestartproject.jwt.JwtAuthFilter;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.security.CustomAuthenticationEntryPoint;
 import com.sparta.hanghaestartproject.security.CustomSecurityFilter;
@@ -64,16 +65,16 @@ public class WebSecurityConfig {
           // todo 수정필요
           http.authorizeRequests()
                .antMatchers("/api/user/**").permitAll()
-               .antMatchers("/api/post/**").permitAll()
-               .antMatchers("/api/comment/**").permitAll()
-               .anyRequest().authenticated();
+               .anyRequest().authenticated()
+               .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);;
 
           // Custom 로그인 페이지 사용
           http.formLogin().loginPage("/api/user/login-page").permitAll();
-          
-//          // Custom Filter 등록하기
-//          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
-//
+          //6. 서버는 JWT 토큰을 검증하고 토큰의 정보를 사용하여 사용자의 인증을 진행해주는 Spring Security 에 등록한 Custom Security Filter 를 사용하여 인증/인가를 처리한다.
+          //7. Custom Security Filter에서 SecurityContextHolder 에 인증을 완료한 사용자의 상세 정보를 저장하는데 이를 통해 Spring Security 에 인증이 완료 되었다는 것을 알려준다
+          // Custom Filter 등록하기
+          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
+
           // 접근 제한 페이지 이동 설정
           http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
 //
