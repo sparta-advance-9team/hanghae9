@@ -36,18 +36,18 @@ public class CommentController {
      public CommentResponseDto updateComment(
           @PathVariable Long id, // commentId
           @RequestBody CommentRequestDto requestDto,
-          HttpServletRequest request) {
-          return commentService.updateComment(id, requestDto, request);
+          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+          return commentService.updateComment(id, requestDto, userDetails.getUser());
      }
      
      @DeleteMapping ("/comment/{id}")
      public CompleteResponseDto deleteComment(
           @PathVariable Long id, // commentId
-          HttpServletRequest request) {
-          return commentService.deleteComment(id, request);
+          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+          return commentService.deleteComment(id, userDetails.getUser());
      }
      
-     //    @Secured(value = UserRoleEnum.Authority.ADMIN)
+     //    @Secured(value = UserRoleEnum.Authority.ADMIN) //Admin 전용
      //    @PostMapping("/test-secured")
      //    public String securedTest(@AuthenticationPrincipal UserDetailsImpl userDetails) {
      

@@ -66,24 +66,21 @@ public class WebSecurityConfig {
           http.authorizeRequests()
                .antMatchers("/api/user/**").permitAll()
                .anyRequest().authenticated()
-               .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);;
+               //6. 서버는 JWT 토큰을 검증하고 토큰의 정보를 사용하여 사용자의 인증을 진행해주는 Spring Security 에 등록한 Custom Security Filter 를 사용하여 인증/인가를 처리한다.
+               //7. Custom Security Filter에서 SecurityContextHolder 에 인증을 완료한 사용자의 상세 정보를 저장하는데 이를 통해 Spring Security 에 인증이 완료 되었다는 것을 알려준다
+               .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
           // Custom 로그인 페이지 사용
           http.formLogin().loginPage("/api/user/login-page").permitAll();
-          //6. 서버는 JWT 토큰을 검증하고 토큰의 정보를 사용하여 사용자의 인증을 진행해주는 Spring Security 에 등록한 Custom Security Filter 를 사용하여 인증/인가를 처리한다.
-          //7. Custom Security Filter에서 SecurityContextHolder 에 인증을 완료한 사용자의 상세 정보를 저장하는데 이를 통해 Spring Security 에 인증이 완료 되었다는 것을 알려준다
-          // Custom Filter 등록하기
+          // Custom Filter 등록하기 >> 언제쓰는거?
           http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
-
           // 접근 제한 페이지 이동 설정
           http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
-//
-//          // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
-//          http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
-//
-//          // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
-//          http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
-//
+          // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
+          http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
+
+          // 403 Error 처리, 인증과는 별개로 추가적인 권한이 충족되지 않는 경우
+          http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
           return http.build();
      }
 

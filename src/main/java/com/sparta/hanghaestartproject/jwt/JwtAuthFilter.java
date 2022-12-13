@@ -47,13 +47,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
           SecurityContextHolder.setContext(context);
      }
      
-//     public Authentication getAuthentication(HttpServletRequest request){
-//          String token = jwtUtil.resolveToken(request);
-//          if(token == null) return null;
-//          Claims info = jwtUtil.getUserInfoFromToken(token);
-//
-//     }
-     
      public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
           response.setStatus(statusCode);
           response.setContentType("application/json");

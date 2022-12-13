@@ -50,8 +50,7 @@ public class CommentService {
      
      @Transactional
      public CommentResponseDto updateComment
-          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+          (Long id, CommentRequestDto requestDto, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
           
@@ -65,9 +64,7 @@ public class CommentService {
      }
      
      public CompleteResponseDto deleteComment
-          (Long id, HttpServletRequest request) {
-          User user = getUser.getUser(request);
-          
+          (Long id, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
           
