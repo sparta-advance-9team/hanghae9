@@ -6,8 +6,6 @@ import lombok.Setter;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
 public class SignupRequestDto {
 //  ^([\w\.\_\-])*[a-zA-Z0-9]+([\w\.\_\-])*([a-zA-Z0-9])+([\w\.\_\-])+@([a-zA-Z0-9]+\.)+[a-zA-Z0-9]{2,8}$
 //     @Pattern(regexp = "^(?=.*?[a-z])(?=.*?[0-9]).{4,10}$",
@@ -24,4 +22,36 @@ public class SignupRequestDto {
      
      private boolean admin = false;
      private String adminToken = "";
+
+     public String getUsername() {
+          return username;
+     }
+
+     public void setUsername(String username) {
+          this.username = username;
+     }
+
+     public String getPassword() {
+          return password;
+     }
+
+     public void setPassword(String password) {
+          this.password = password;
+     }
+
+     public boolean isAdmin() {
+          return admin;
+     }
+
+     public void setAdmin(boolean admin) {
+          this.admin = admin;
+     }
+
+     public String getAdminToken() {
+          return adminToken;
+     }
+
+     public void setAdminToken(String adminToken) {
+          this.adminToken = adminToken;
+     }
 }

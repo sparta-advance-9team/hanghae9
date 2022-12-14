@@ -3,12 +3,14 @@ package com.sparta.hanghaestartproject.entity;
 import com.sparta.hanghaestartproject.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Post extends Timestamped{
@@ -21,13 +23,13 @@ public class Post extends Timestamped{
      
      @Column (nullable = false)
      private String username;
-     
+
      @Column (nullable = false)
      private String content;
-     
-//     @ManyToOne(fetch = FetchType.LAZY)
-//     @JoinColumn(name="user_id")
-//     private User user;
+
+     @OneToMany(mappedBy = "post")
+     private List<Category> categories = new ArrayList<>();
+
      @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
      private List<Comment> commentList = new ArrayList<>();
      
@@ -38,6 +40,14 @@ public class Post extends Timestamped{
           this.title = requestDto.getTitle();
           this.content = requestDto.getContent();
           this.username = username;
+          this.categories = requestDto.getCategories();
+     }
+
+     public Post(PostRequestDto requestDto, String username, List<CategoryEnum> categoryEnums){
+          this.title = requestDto.getTitle();
+          this.content = requestDto.getContent();
+          this.username = username;
+
      }
      
      public void update(PostRequestDto requestDto) {
