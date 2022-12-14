@@ -40,7 +40,7 @@ public class Post extends Timestamped{
           this.title = requestDto.getTitle();
           this.content = requestDto.getContent();
           this.username = username;
-          this.categories = requestDto.getCategories();
+          this.categories =  requestDto.getCategories();
      }
 
      public Post(PostRequestDto requestDto, String username, List<CategoryEnum> categoryEnums){

@@ -1,10 +1,7 @@
 package com.sparta.hanghaestartproject.service;
 
 import com.sparta.hanghaestartproject.dto.*;
-import com.sparta.hanghaestartproject.entity.Comment;
-import com.sparta.hanghaestartproject.entity.Post;
-import com.sparta.hanghaestartproject.entity.User;
-import com.sparta.hanghaestartproject.entity.UserRoleEnum;
+import com.sparta.hanghaestartproject.entity.*;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
@@ -12,8 +9,8 @@ import com.sparta.hanghaestartproject.repository.CategoryRepository;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import com.sparta.hanghaestartproject.security.UserDetailsImpl;
 import com.sparta.hanghaestartproject.util.GetUser;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,11 +31,12 @@ public class PostService {
      private final CategoryRepository categoryRepository;
      private final JwtUtil jwtUtil;
      
-     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil){
+     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, CategoryRepository categoryRepository, JwtUtil jwtUtil){
           this.getUser = getUser;
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
           this.userRepository = userRepository;
+          this.categoryRepository = categoryRepository;
           this.jwtUtil = jwtUtil;
      }
      
@@ -54,18 +52,17 @@ public class PostService {
      }
      
      @Transactional
-     public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
 
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
-
-          /*List<CategoryEnum> categoryEnums = requestDto.getCategories();
+/*
+          List<String> stringCategoryList = requestDto.getCategories();
           List<Category> categories = new ArrayList<>();
 
-          for (CategoryEnum all : categoryEnums) {
-               Category category = Category.builder()
+          for (String all : stringCategoryList) {
+               String category = Category.builder()
                        .categoryEnum(all)
                        .post(post)
                        .build();
@@ -94,8 +91,7 @@ public class PostService {
      //- 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 게시글만 수정 가능
      //- 제목, 작성 내용을 수정하고 수정된 게시글을 Client 로 반환하기
      @Transactional
-     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
@@ -109,8 +105,7 @@ public class PostService {
      }
      
      @Transactional
-     public CompleteResponseDto deletePost(Long id, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+     public CompleteResponseDto deletePost(Long id, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
