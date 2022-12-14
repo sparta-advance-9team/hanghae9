@@ -40,7 +40,6 @@ public class LikeService {
 
           if (likePostRepository.findByPostAndUser(post, user) == null) {
                // 좋아요 안눌렀으면 likePost 만들고 좋아요처리
-//               post.setLiked(post.getLiked() + 1);             //좋아요 개수  - 추후에 수정
                LikePost likePost = new LikePost(post, user);
                likePostRepository.save(likePost);
                Long Sum = likePostRepository.countByPost(post);
@@ -67,7 +66,6 @@ public class LikeService {
 
           if (likeCommentRepository.findByCommentAndUser(comment, user) == null) {
                // 좋아요 안눌렀으면 likeComment 만들고 좋아요처리
-//               post.setLiked(post.getLiked() + 1);             //post_id 개수 countby 로 세면 좋아요갯수 가능할듯?
                LikeComment likeComment = new LikeComment(comment, user);
                likeCommentRepository.save(likeComment);
                Long sum = likeCommentRepository.countByComment(comment);
