@@ -1,11 +1,14 @@
 package com.sparta.hanghaestartproject.controller;
 
+import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
 import com.sparta.hanghaestartproject.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +20,7 @@ public class LikeController {
 //     @PutMapping ("/api/like/comment/{id}")
 
      @PostMapping("api/like/post/{id}")  // post id
-     public CompleteResponseDto likePost(@PathVariable Long id,HttpServletRequest request) {
+     public CompleteResponseDto likePost(@PathVariable Long id, HttpServletRequest request) {
           return likeService.likePost(id, request);
      }
 
