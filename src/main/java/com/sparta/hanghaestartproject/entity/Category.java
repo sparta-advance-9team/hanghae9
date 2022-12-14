@@ -2,12 +2,15 @@ package com.sparta.hanghaestartproject.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
 @AllArgsConstructor
+@Getter
 public class Category {
 
     @Id
@@ -23,6 +26,10 @@ public class Category {
     private Post post;
 
     public Category() {
-
+    }
+    
+    public Category(CategoryEnum categoryEnum, Post post){
+        this.categoryEnum = categoryEnum;
+        this.post = post;
     }
 }

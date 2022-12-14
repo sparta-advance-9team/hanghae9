@@ -1,5 +1,6 @@
 package com.sparta.hanghaestartproject.dto;
 
+import com.sparta.hanghaestartproject.entity.CategoryEnum;
 import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.Post;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class PostResponseDto {
      private String title;
      private String username;
      private String content;
-     private String category;
+     private List<CategoryEnum> category;
      
      private List<CommentResponseDto> comments = new ArrayList<>();
      
@@ -30,6 +31,8 @@ public class PostResponseDto {
           this.content = entity.getContent();
           this.comments = entity.getCommentList().stream()
                .map(CommentResponseDto::new).collect(Collectors.toList());
+          this.category = entity.getCategories().stream()
+               .map(ct -> ct.getCategoryEnum()).collect(Collectors.toList());
 //          this.comments = entity.getCommentList();
      }
 }

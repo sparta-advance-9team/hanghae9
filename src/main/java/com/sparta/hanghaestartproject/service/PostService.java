@@ -14,6 +14,7 @@ import com.sparta.hanghaestartproject.util.GetUser;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,7 +54,7 @@ public class PostService {
      
      @Transactional
      public PostResponseDto createPost(PostRequestDto requestDto, User user) {
-
+          
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
@@ -68,9 +69,13 @@ public class PostService {
                        .build();
                categories.add(category);
           }*/
-          categoryRepository.saveAll(requestDto.getCategories());
-          post.setCategories(requestDto.getCategories());
-
+          Post finalPost = post;
+          List<Category> categories = requestDto.getCategories().stream()
+               .map(ct -> new Category(ct, finalPost)).collect(Collectors.toList());
+          categoryRepository.saveAll(categories);
+          
+          post.setCategories(categories);
+          // set으로 넣기 필요, 중복으로 안들어가게 확인필요
           return new PostResponseDto(post);
      }
      
