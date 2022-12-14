@@ -7,4 +7,6 @@ public interface LikeCommentRepository extends JpaRepository<LikeComment, Long> 
 
     LikeComment findByCommentAndUser(Comment comment, User user);
 
+    Long countByComment(Comment comment);
+
 }

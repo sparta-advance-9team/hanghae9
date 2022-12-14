@@ -6,13 +6,10 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@Data
-@Builder
-@Getter
 @Entity
-@NoArgsConstructor
+//@NoArgsConstructor
 public class LikePost extends Timestamped{
+
      
      @Id
      @GeneratedValue (strategy = GenerationType.AUTO)
@@ -20,8 +17,6 @@ public class LikePost extends Timestamped{
 
      @Column(nullable = false)
      private boolean status;        //true : 따봉,  false : 따봉취소
-//     @Column (nullable = false)
-//     private String username;
 
      @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name = "user_id", nullable = false)
@@ -38,8 +33,11 @@ public class LikePost extends Timestamped{
           this.status = true;
      }
 
+     public LikePost() {
+          // Args가 No인 기본Constructor 생성
+     }
+
      public void unLikePost(Post post) {
           this.status = false;
-//          post.setLiked(post.getLiked() -1);           //좋아요 개수 - 추후에 수정
      }
 }

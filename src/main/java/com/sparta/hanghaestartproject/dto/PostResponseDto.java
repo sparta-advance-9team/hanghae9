@@ -19,6 +19,8 @@ public class PostResponseDto {
      private String content;
      
      private List<CommentResponseDto> comments = new ArrayList<>();
+
+     private Long likePostNum;
      
      public PostResponseDto(Post entity){
           this.id = entity.getId();
@@ -30,5 +32,6 @@ public class PostResponseDto {
           this.comments = entity.getCommentList().stream()
                .map(CommentResponseDto::new).collect(Collectors.toList());
 //          this.comments = entity.getCommentList();
+          this.likePostNum = entity.getLikePostNum();
      }
 }

@@ -24,6 +24,9 @@ public class Post extends Timestamped{
      
      @Column (nullable = false)
      private String content;
+
+     @Column(nullable = true)
+     private Long likePostNum;
      
 //     @ManyToOne(fetch = FetchType.LAZY)
 //     @JoinColumn(name="user_id")
@@ -52,5 +55,9 @@ public class Post extends Timestamped{
      public void addComment(Comment comment){
           this.commentList.add(comment);
           comment.updatePost(this);
+     }
+
+     public void setLikePostNum(Long sum) {// setLikePostNum 인자값을 뭘넣어야할까?
+          this.likePostNum = sum;
      }
 }

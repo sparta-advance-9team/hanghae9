@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class LikeService {
      private final GetUser getUser;
      private final LikePostRepository likePostRepository;
@@ -22,10 +22,15 @@ public class LikeService {
      private final JwtUtil jwtUtil;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
-     private final UserRepository userRepository;
-//     private Post post;
-//     private User user;
 
+     public LikeService(GetUser getUser, LikePostRepository likePostRepository, LikeCommentRepository likeCommentRepository, JwtUtil jwtUtil, PostRepository postRepository, CommentRepository commentRepository) {
+          this.getUser = getUser;
+          this.likePostRepository = likePostRepository;
+          this.likeCommentRepository = likeCommentRepository;
+          this.jwtUtil = jwtUtil;
+          this.postRepository = postRepository;
+          this.commentRepository = commentRepository;
+     }
 
      @Transactional
      public CompleteResponseDto likePost(Long id, HttpServletRequest request) {
@@ -38,14 +43,20 @@ public class LikeService {
 //               post.setLiked(post.getLiked() + 1);             //좋아요 개수  - 추후에 수정
                LikePost likePost = new LikePost(post, user);
                likePostRepository.save(likePost);
+               Long Sum = likePostRepository.countByPost(post);
+               post.setLikePostNum(Sum);
                return CompleteResponseDto.success("따봉 추가");
           } else {
                // 좋아요 누른상태면 취소처리후 테이블 삭제
                LikePost likePost = likePostRepository.findByPostAndUser(post, user);
                likePost.unLikePost(post);
                likePostRepository.delete(likePost);
+               Long Sum = likePostRepository.countByPost(post);
+               post.setLikePostNum(Sum);
                return CompleteResponseDto.success("따봉 취소");
           }
+
+
      }
 
      @Transactional
@@ -59,12 +70,16 @@ public class LikeService {
 //               post.setLiked(post.getLiked() + 1);             //post_id 개수 countby 로 세면 좋아요갯수 가능할듯?
                LikeComment likeComment = new LikeComment(comment, user);
                likeCommentRepository.save(likeComment);
+               Long sum = likeCommentRepository.countByComment(comment);
+               comment.setLikeCommentNum(sum);
                return CompleteResponseDto.success("따봉 추가");
           } else {
                // 좋아요 누른상태면 취소처리후 테이블 삭제
                LikeComment likeComment = likeCommentRepository.findByCommentAndUser(comment, user);
                likeComment.unLikeComment(comment);
                likeCommentRepository.delete(likeComment);
+               Long sum = likeCommentRepository.countByComment(comment);
+               comment.setLikeCommentNum(sum);
                return CompleteResponseDto.success("따봉 취소");
           }
      }

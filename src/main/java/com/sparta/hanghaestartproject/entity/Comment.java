@@ -19,6 +19,9 @@ public class Comment extends Timestamped {
      
      @Column (nullable = false)
      private String content;
+
+     @Column
+     private Long likeCommentNum;
      
      @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name="post_id")
@@ -61,5 +64,9 @@ public class Comment extends Timestamped {
      
      public Set<LikeComment> getLikeCommentList() {
           return likeCommentList;
+     }
+
+     public void setLikeCommentNum(Long sum) {
+          this.likeCommentNum = sum;
      }
 }

@@ -9,10 +9,10 @@ import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
+import com.sparta.hanghaestartproject.repository.LikePostRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,13 +30,16 @@ public class PostService {
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
+
+     private final LikePostRepository likePostRepository;
      
-     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil){
+     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil, LikePostRepository likePostRepository){
           this.getUser = getUser;
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
           this.userRepository = userRepository;
           this.jwtUtil = jwtUtil;
+          this.likePostRepository = likePostRepository;
      }
      
      @Transactional (readOnly = true)
@@ -56,6 +59,8 @@ public class PostService {
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
+          Long Sum = likePostRepository.countByPost(post);
+          post.setLikePostNum(Sum + 0);
           return new PostResponseDto(post);
      }
      

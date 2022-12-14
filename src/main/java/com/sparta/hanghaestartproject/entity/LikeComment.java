@@ -6,20 +6,13 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-@AllArgsConstructor
-@Data
-@Builder
-@Getter
 @Entity
-@NoArgsConstructor
+//@NoArgsConstructor
 public class LikeComment extends Timestamped{
      
      @Id
      @GeneratedValue (strategy = GenerationType.AUTO)
      private Long id;
-     
-//     @Column (nullable = false)
-//     private String username;
 
      @Column(nullable = false)
      private boolean status;
@@ -37,6 +30,10 @@ public class LikeComment extends Timestamped{
           this.comment = comment;
           this.user = user;
           this.status = true;
+     }
+
+     public LikeComment() {
+          // Args가 No인 기본Constructor 생성
      }
 
      public void unLikeComment(Comment comment) {
