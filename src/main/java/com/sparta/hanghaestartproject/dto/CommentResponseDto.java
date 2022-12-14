@@ -4,6 +4,9 @@ import com.sparta.hanghaestartproject.entity.Comment;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommentResponseDto{
      private Long id;
@@ -11,6 +14,8 @@ public class CommentResponseDto{
      private LocalDateTime modifiedAt;
      private String username;
      private String content;
+
+     private List<ReCommentResponseDto> recomments = new ArrayList<>();
      
      public CommentResponseDto(Comment comment){
           this.id = comment.getId();
@@ -18,6 +23,8 @@ public class CommentResponseDto{
           this.modifiedAt = comment.getModifiedAt();
           this.username = comment.getUsername();
           this.content = comment.getContent();
+          this.recomments = comment.getReCommentList().stream()
+                  .map(ReCommentResponseDto::new).collect(Collectors.toList());
      }
      
      public Long getId(){
@@ -35,4 +42,6 @@ public class CommentResponseDto{
      public String getContent() {
           return content;
      }
+
+     public List<ReCommentResponseDto> getReComments(){return this.recomments;}
 }
