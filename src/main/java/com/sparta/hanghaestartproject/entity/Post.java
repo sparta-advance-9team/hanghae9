@@ -3,12 +3,14 @@ package com.sparta.hanghaestartproject.entity;
 import com.sparta.hanghaestartproject.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Post extends Timestamped{

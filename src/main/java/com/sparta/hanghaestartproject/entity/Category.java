@@ -1,11 +1,13 @@
 package com.sparta.hanghaestartproject.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import javax.persistence.*;
 
 @Entity
 @Builder
+@AllArgsConstructor
 public class Category {
 
     @Id

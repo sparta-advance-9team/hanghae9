@@ -37,12 +37,13 @@ public class PostService {
      @Transactional
      public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest request) {
           User user = getUser.getUser(request);
-          List<CategoryEnum> categoryEnums = requestDto.getCategories();
-          List<Category> categories = new ArrayList<>();
 
           // 토큰이 있는 경우에만 관심상품 추가 가능
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
+
+          /*List<CategoryEnum> categoryEnums = requestDto.getCategories();
+          List<Category> categories = new ArrayList<>();
 
           for (CategoryEnum all : categoryEnums) {
                Category category = Category.builder()
@@ -50,8 +51,10 @@ public class PostService {
                        .post(post)
                        .build();
                categories.add(category);
-          }
-          categoryRepository.saveAll();
+          }*/
+          categoryRepository.saveAll(requestDto.getCategories());
+          post.setCategories(requestDto.getCategories());
+
           return new PostResponseDto(post);
      }
      
