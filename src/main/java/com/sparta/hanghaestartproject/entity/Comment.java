@@ -69,4 +69,8 @@ public class Comment extends Timestamped {
      public void setLikeCommentNum(Long sum) {
           this.likeCommentNum = sum;
      }
+
+     public Long getLikeCommentNum() {
+          return this.likeCommentNum;
+     }
 }

@@ -42,16 +42,16 @@ public class LikeService {
                // 좋아요 안눌렀으면 likePost 만들고 좋아요처리
                LikePost likePost = new LikePost(post, user);
                likePostRepository.save(likePost);
-               Long Sum = likePostRepository.countByPost(post);
-               post.setLikePostNum(Sum);
+//               Long Sum = likePostRepository.countByPost(post);
+               post.setLikePostNum(post.getLikePostNum() + 1);
                return CompleteResponseDto.success("따봉 추가");
           } else {
                // 좋아요 누른상태면 취소처리후 테이블 삭제
                LikePost likePost = likePostRepository.findByPostAndUser(post, user);
                likePost.unLikePost(post);
                likePostRepository.delete(likePost);
-               Long Sum = likePostRepository.countByPost(post);
-               post.setLikePostNum(Sum);
+//               Long Sum = likePostRepository.countByPost(post);
+               post.setLikePostNum(post.getLikePostNum() - 1);
                return CompleteResponseDto.success("따봉 취소");
           }
 
@@ -68,16 +68,16 @@ public class LikeService {
                // 좋아요 안눌렀으면 likeComment 만들고 좋아요처리
                LikeComment likeComment = new LikeComment(comment, user);
                likeCommentRepository.save(likeComment);
-               Long sum = likeCommentRepository.countByComment(comment);
-               comment.setLikeCommentNum(sum);
+//               Long sum = likeCommentRepository.countByComment(comment);
+               comment.setLikeCommentNum(comment.getLikeCommentNum() + 1);
                return CompleteResponseDto.success("따봉 추가");
           } else {
                // 좋아요 누른상태면 취소처리후 테이블 삭제
                LikeComment likeComment = likeCommentRepository.findByCommentAndUser(comment, user);
                likeComment.unLikeComment(comment);
                likeCommentRepository.delete(likeComment);
-               Long sum = likeCommentRepository.countByComment(comment);
-               comment.setLikeCommentNum(sum);
+//               Long sum = likeCommentRepository.countByComment(comment);
+               comment.setLikeCommentNum(comment.getLikeCommentNum() - 1);
                return CompleteResponseDto.success("따봉 취소");
           }
      }
