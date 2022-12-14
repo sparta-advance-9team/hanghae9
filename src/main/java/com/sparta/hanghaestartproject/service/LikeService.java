@@ -33,10 +33,10 @@ public class LikeService {
      }
 
      @Transactional
-     public CompleteResponseDto likePost(Long id, HttpServletRequest request) {
+     public CompleteResponseDto likePost(Long id, User user) {
           Post post = postRepository.findById(id)
                   .orElseThrow(() ->new RestApiException(CommonErrorCode.NO_ARTICLE));
-          User user = getUser.getUser(request);       // security 이후 추가할듯 아마?
+              // security 이후 추가할듯 아마?
 
           if (likePostRepository.findByPostAndUser(post, user) == null) {
                // 좋아요 안눌렀으면 likePost 만들고 좋아요처리
@@ -60,10 +60,10 @@ public class LikeService {
      }
 
      @Transactional
-     public CompleteResponseDto likeComment(Long id, HttpServletRequest request) {
+     public CompleteResponseDto likeComment(Long id, User user) {
           Comment comment = commentRepository.findById(id)
                   .orElseThrow(() ->new RestApiException(CommonErrorCode.NO_COMMENT));
-          User user = getUser.getUser(request);       // security 이후 추가할듯 아마?
+                // security 이후 추가할듯 아마?
 
           if (likeCommentRepository.findByCommentAndUser(comment, user) == null) {
                // 좋아요 안눌렀으면 likeComment 만들고 좋아요처리
