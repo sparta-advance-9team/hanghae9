@@ -56,7 +56,7 @@ public class LikeService {
 
           if (likeCommentRepository.findByCommentAndUser(comment, user) == null) {
                // 좋아요 안눌렀으면 likeComment 만들고 좋아요처리
-//               post.setLiked(post.getLiked() + 1);             //post_id 개수 countby 로 세면 좋아요갯수 가능할듯?  -최교수님의견
+//               post.setLiked(post.getLiked() + 1);             //post_id 개수 countby 로 세면 좋아요갯수 가능할듯?
                LikeComment likeComment = new LikeComment(comment, user);
                likeCommentRepository.save(likeComment);
                return CompleteResponseDto.success("따봉 추가");
