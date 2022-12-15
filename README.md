@@ -20,3 +20,4 @@
 ## API
 [API&테스트케이스 ](https://docs.google.com/spreadsheets/d/16m9RGblVgYA5vwvS9IT523fcfl0eii1AEGjc0mcoAHM/edit?usp=sharing)
 
+![image](https://user-images.githubusercontent.com/114922306/207871227-000725b3-9c16-49db-9231-88702c9756dd.png)
