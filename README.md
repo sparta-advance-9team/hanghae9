@@ -6,16 +6,16 @@
 2022년 12월 9일 ~ 2022년 12월 15일
 
 ## 팀원
--유종열(팀장)
--김규민
--장영주(개발팀장)
--김현주
--방승섭
+- 유종열(팀장)
+- 김규민
+- 장영주(개발팀장)
+- 김현주
+- 방승섭
 
 ## Tech Stacks
--Spring Boot
--Spring Data JPA
--Spring Security + JWT
+- Spring Boot
+- Spring Data JPA
+- Spring Security + JWT
 
 ## API
 API&테스트케이스 [LINK](https://docs.google.com/spreadsheets/d/16m9RGblVgYA5vwvS9IT523fcfl0eii1AEGjc0mcoAHM/edit?usp=sharing)
