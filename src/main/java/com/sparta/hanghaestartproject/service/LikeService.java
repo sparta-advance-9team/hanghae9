@@ -6,28 +6,21 @@ import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.*;
-import com.sparta.hanghaestartproject.util.GetUser;
-import lombok.RequiredArgsConstructor;
+import com.sparta.hanghaestartproject.util.Util;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Service
 //@RequiredArgsConstructor
 public class LikeService {
-     private final GetUser getUser;
      private final LikePostRepository likePostRepository;
      private final LikeCommentRepository likeCommentRepository;
-     private final JwtUtil jwtUtil;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
 
-     public LikeService(GetUser getUser, LikePostRepository likePostRepository, LikeCommentRepository likeCommentRepository, JwtUtil jwtUtil, PostRepository postRepository, CommentRepository commentRepository) {
-          this.getUser = getUser;
+     public LikeService(LikePostRepository likePostRepository, LikeCommentRepository likeCommentRepository, PostRepository postRepository, CommentRepository commentRepository) {
           this.likePostRepository = likePostRepository;
           this.likeCommentRepository = likeCommentRepository;
-          this.jwtUtil = jwtUtil;
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
      }

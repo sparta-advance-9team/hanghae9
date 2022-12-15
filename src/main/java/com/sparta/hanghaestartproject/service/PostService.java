@@ -4,41 +4,33 @@ import com.sparta.hanghaestartproject.dto.*;
 import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.Post;
 import com.sparta.hanghaestartproject.entity.User;
-import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
-import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.LikePostRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
-import com.sparta.hanghaestartproject.util.GetUser;
+import com.sparta.hanghaestartproject.util.Util;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class PostService {
-     private final GetUser getUser;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
-//     private final JwtUtil jwtUtil;
-
      private final LikePostRepository likePostRepository;
      
-     PostService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil, LikePostRepository likePostRepository){
-          this.getUser = getUser;
+     PostService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, LikePostRepository likePostRepository){
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
           this.userRepository = userRepository;
-//          this.jwtUtil = jwtUtil;
           this.likePostRepository = likePostRepository;
      }
      
@@ -84,7 +76,7 @@ public class PostService {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
      
-          checkSameUser(user, post);
+          Util.checkPostUsernameByUser(user, post);
           post.update(requestDto);
           return new PostResponseDto(post);
      }
@@ -92,19 +84,9 @@ public class PostService {
      public CompleteResponseDto deletePost(Long id, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
-     
-          checkSameUser(user, post);
+          Util.checkPostUsernameByUser(user, post);
           postRepository.delete(post);
           return CompleteResponseDto.success("게시글 삭제 성공");
      }
-     
-     private static void checkSameUser(User user, Post post) {
-          if (user.getRole() == UserRoleEnum.USER) {
-               if (!post.getUsername().equals(user.getUsername())) {
-                    throw new RestApiException(CommonErrorCode.INVALID_USER);
-               }
-          }
-     }
-     
 }
 
