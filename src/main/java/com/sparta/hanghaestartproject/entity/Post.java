@@ -8,9 +8,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
+//@Getter
 @Entity
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Post extends Timestamped{
      @Id
      @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -27,6 +27,36 @@ public class Post extends Timestamped{
 
      @Column(nullable = true)
      private Long likePostNum;
+
+
+     public Post(){
+     }
+
+     public Long getId() {
+          return this.id;
+     }
+
+
+     public String getTitle(){
+          return this.title;
+     }
+
+     public String getUsername(){
+          return this.username;
+     }
+
+     public String getContent(){
+          return this.content;
+     }
+
+     public List<Comment> getCommentList(){
+          return commentList;
+     }
+
+     public List<LikePost> getLikePostList(){
+          return likePostList;
+     }
+
      
 //     @ManyToOne(fetch = FetchType.LAZY)
 //     @JoinColumn(name="user_id")

@@ -4,6 +4,7 @@ import com.sparta.hanghaestartproject.dto.CommentRequestDto;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +30,11 @@ public class Comment extends Timestamped {
      
      @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
      private Set<LikeComment> likeCommentList = new HashSet<>();
-     
+
+     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+     private List<ReComment> reCommentList = new ArrayList<>();
+
+
      public Comment(CommentRequestDto requestDto, String username) {
           this.username = username;
           this.content = requestDto.getContent();
@@ -72,5 +77,12 @@ public class Comment extends Timestamped {
 
      public Long getLikeCommentNum() {
           return this.likeCommentNum;
+
+     public List<ReComment> getReCommentList(){ return reCommentList;}
+
+     public void addReComment(ReComment reComment){
+          this.reCommentList.add(reComment);
+          reComment.updateComment(this);
+
      }
 }
