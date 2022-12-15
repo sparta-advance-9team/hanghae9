@@ -10,43 +10,50 @@ import com.sparta.hanghaestartproject.entity.UserRoleEnum;
 import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
+import com.sparta.hanghaestartproject.repository.LikeCommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.util.GetUser;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Service
-@RequiredArgsConstructor
 public class CommentService {
-     
      private final GetUser getUser;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
      private final JwtUtil jwtUtil;
+
+     private final LikeCommentRepository likeCommentRepository;
+     
+     public CommentService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil, LikeCommentRepository likeCommentRepository){
+          this.getUser = getUser;
+          this.postRepository = postRepository;
+          this.commentRepository = commentRepository;
+          this.userRepository = userRepository;
+          this.jwtUtil = jwtUtil;
+          this.likeCommentRepository = likeCommentRepository;
+     }
      
      @Transactional
      public CommentResponseDto createComment // id : 게시글 id
-          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+          (Long id, CommentRequestDto requestDto, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
           Comment comment = new Comment(requestDto, user.getUsername());
           comment.updatePost(post);
           commentRepository.save(comment);
+          Long sum = likeCommentRepository.countByComment(comment);
+          comment.setLikeCommentNum(sum + 0);
           return new CommentResponseDto(comment);
      }
      
      @Transactional
      public CommentResponseDto updateComment
-          (Long id, CommentRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+          (Long id, CommentRequestDto requestDto, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
           
@@ -60,9 +67,7 @@ public class CommentService {
      }
      
      public CompleteResponseDto deleteComment
-          (Long id, HttpServletRequest request) {
-          User user = getUser.getUser(request);
-          
+          (Long id, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
           
