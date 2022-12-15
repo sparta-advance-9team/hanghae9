@@ -41,7 +41,7 @@ public class ReComment extends Timestamped {
 
 
 
-    public long getId(){
+    public Long getId(){
         return id;
     }
 

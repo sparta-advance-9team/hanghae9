@@ -27,12 +27,12 @@ public class Post extends Timestamped{
 
 
      public Post(){
-
      }
 
-     public long getId(){
+     public Long getId() {
           return this.id;
      }
+
 
      public String getTitle(){
           return this.title;

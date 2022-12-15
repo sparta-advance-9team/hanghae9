@@ -22,7 +22,7 @@ public class ReCommentResponseDto {
     public ReCommentResponseDto(ReComment reComment){
         this.id = reComment.getId();
         this.createdAt = reComment.getCreatedAt();
-        this.createdAt = reComment.getModifiedAt();
+        this.modifiedAt = reComment.getModifiedAt();
         this.username = reComment.getUsername();
         this.content = reComment.getContent();
     }
