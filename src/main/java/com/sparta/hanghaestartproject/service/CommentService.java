@@ -14,13 +14,12 @@ import com.sparta.hanghaestartproject.repository.LikeCommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
-import com.sparta.hanghaestartproject.util.GetUser;
+import com.sparta.hanghaestartproject.util.Util;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentService {
-     private final GetUser getUser;
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
@@ -28,8 +27,7 @@ public class CommentService {
 
      private final LikeCommentRepository likeCommentRepository;
      
-     public CommentService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil, LikeCommentRepository likeCommentRepository){
-          this.getUser = getUser;
+     public CommentService( PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, JwtUtil jwtUtil, LikeCommentRepository likeCommentRepository){
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
           this.userRepository = userRepository;
@@ -56,12 +54,8 @@ public class CommentService {
           (Long id, CommentRequestDto requestDto, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
-          
-          if (user.getRole().equals(UserRoleEnum.USER)) {
-               if (!comment.getUsername().equals(user.getUsername())) {
-                    throw new RestApiException(CommonErrorCode.INVALID_USER);
-               }
-          }
+     
+          Util.checkCommentUsernameByUser(user, comment);
           comment.update(requestDto);
           return new CommentResponseDto(comment);
      }
@@ -70,14 +64,11 @@ public class CommentService {
           (Long id, User user) {
           Comment comment = commentRepository.findById(id)
                .orElseThrow(()-> new RestApiException(CommonErrorCode.NO_COMMENT));
-          
-          if (user.getRole().equals(UserRoleEnum.USER)) {
-               if (!comment.getUsername().equals(user.getUsername())) {
-                    throw new RestApiException(CommonErrorCode.INVALID_USER);
-               }
-          }
+     
+          Util.checkCommentUsernameByUser(user, comment);
           commentRepository.delete(comment);
           return CompleteResponseDto.success("댓글 삭제 성공");
      }
+     
      
 }

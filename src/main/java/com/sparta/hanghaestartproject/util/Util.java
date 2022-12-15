@@ -1,5 +1,6 @@
 package com.sparta.hanghaestartproject.util;
 
+import com.sparta.hanghaestartproject.entity.Comment;
 import com.sparta.hanghaestartproject.entity.Post;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
@@ -44,11 +45,19 @@ public class Util {
           }
      }
      
-     public static void checkSameUser(User user, Post post) {
+     public static void checkPostUsernameByUser(User user, Post post) {
           if (user.getRole() == UserRoleEnum.USER) {
                if (!post.getUsername().equals(user.getUsername())) {
                     throw new RestApiException(CommonErrorCode.INVALID_USER);
                }
           }
      }
+     public static void checkCommentUsernameByUser(User user, Comment comment) {
+          if (user.getRole().equals(UserRoleEnum.USER)) {
+               if (!comment.getUsername().equals(user.getUsername())) {
+                    throw new RestApiException(CommonErrorCode.INVALID_USER);
+               }
+          }
+     }
+     
 }
