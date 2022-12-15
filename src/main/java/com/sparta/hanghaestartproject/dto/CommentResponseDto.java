@@ -20,7 +20,7 @@ public class CommentResponseDto{
           this.modifiedAt = comment.getModifiedAt();
           this.username = comment.getUsername();
           this.content = comment.getContent();
-//          this.likeCommentNum = comment.getLikeCommentList();
+          this.likeCommentNum = comment.getLikeCommentNum();
      }
 
      public Long getLikeCommentNum(){

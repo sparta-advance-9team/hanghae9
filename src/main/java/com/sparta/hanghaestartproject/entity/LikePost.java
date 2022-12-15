@@ -20,7 +20,7 @@ public class LikePost extends Timestamped{
 
      @ManyToOne(fetch = FetchType.LAZY)
      @JoinColumn(name = "user_id", nullable = false)
-     @OnDelete(action = OnDeleteAction.CASCADE)  // 유저가 지워지면 유저-게시글 간테이블 삭제
+     @OnDelete(action = OnDeleteAction.CASCADE)  // 유저가 지워지면 유저-게시글간 row 삭제  /delete로 지우면 fk로 엮여있어서 안됨 / db에서 직접처리 따라서 삭제쿼리도안나감 서버비용줄일듯?
      private User user;
      
      @ManyToOne(fetch = FetchType.LAZY)
