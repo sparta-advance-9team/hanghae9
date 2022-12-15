@@ -19,6 +19,7 @@
 - Spring Boot
 - Spring Data JPA
 - Spring Security + JWT
+- AWS RDS(MySQL)
 
 
 ## API
