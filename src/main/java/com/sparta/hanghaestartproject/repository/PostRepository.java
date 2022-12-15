@@ -12,4 +12,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //     @EntityGraph(attributePaths = {"commentList"})
      List<Post> findAllByOrderByCreatedAtDesc(Pageable pageable);
      boolean existsByIdAndUsername(Long id, String username);
+     
+     void deleteAllByUsername(String username);
 }

@@ -9,6 +9,7 @@ import com.sparta.hanghaestartproject.security.UserDetailsServiceImpl;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -64,7 +65,7 @@ public class WebSecurityConfig {
      
           // todo 수정필요
           http.authorizeRequests()
-               .antMatchers("/api/user/**").permitAll()
+               .antMatchers(HttpMethod.POST,"/api/user/**").permitAll()
                .anyRequest().authenticated()
                //6. 서버는 JWT 토큰을 검증하고 토큰의 정보를 사용하여 사용자의 인증을 진행해주는 Spring Security 에 등록한 Custom Security Filter 를 사용하여 인증/인가를 처리한다.
                //7. Custom Security Filter에서 SecurityContextHolder 에 인증을 완료한 사용자의 상세 정보를 저장하는데 이를 통해 Spring Security 에 인증이 완료 되었다는 것을 알려준다

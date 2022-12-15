@@ -7,8 +7,13 @@ import com.sparta.hanghaestartproject.errorcode.ErrorCode;
 import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import com.sparta.hanghaestartproject.security.UserDetailsImpl;
+import com.sparta.hanghaestartproject.security.UserDetailsServiceImpl;
 import com.sparta.hanghaestartproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,21 +46,28 @@ public class UserController {
      
 //     @PostMapping("/login")
 //     public String login(@AuthenticationPrincipal UserDetails userDetails)
-     @ResponseBody
+     
      @PostMapping("/login")
      public CompleteResponseDto login(@RequestBody @Valid LoginRequestDto loginRequestDto, HttpServletResponse response) {
           return userService.login(loginRequestDto, response);
      }
      
-     @GetMapping("/login-page")
-     public ModelAndView loginPage() {
-          return new ModelAndView("login");
+     @Secured (value = UserRoleEnum.Authority.ADMIN)
+     @DeleteMapping("/deleteUser")
+     public CompleteResponseDto deleteUser(@RequestBody LoginRequestDto loginRequestDto, @AuthenticationPrincipal UserDetailsImpl adminDetail){
+          return userService.deleteUser(loginRequestDto, adminDetail.getUser());
      }
+     
+     
+//     @GetMapping("/login-page")
+//     public ModelAndView loginPage() {
+//          return new ModelAndView("login");
+//     }
      
      //@Secured(value = UserRoleEnum.Authority.ADMIN) 관리자용
-     
-     @PostMapping("/forbidden")
-     public ModelAndView forbidden() {
-          return new ModelAndView("forbidden");
-     }
+//
+//     @PostMapping("/forbidden")
+//     public ModelAndView forbidden() {
+//          return new ModelAndView("forbidden");
+//     }
 }
