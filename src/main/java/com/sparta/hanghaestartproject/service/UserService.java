@@ -11,6 +11,8 @@ import com.sparta.hanghaestartproject.jwt.JwtUtil;
 import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
+@Slf4j
 @Service
 //@RequiredArgsConstructor의 역할.. final이 붙거나 @NotNull 이 붙은 필드의 생성자를 자동으로 생성해준다. 30~33줄 참고
 public class UserService {
@@ -30,8 +33,8 @@ public class UserService {
      private final CommentRepository commentRepository;
      private final PasswordEncoder passwordEncoder;
      private final JwtUtil jwtUtil;
-     
-     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+     @Value ("${admin.token}")
+     private String ADMIN_TOKEN;
      
      public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil
      , PostRepository postRepository, CommentRepository commentRepository) {
@@ -95,5 +98,9 @@ public class UserService {
           commentRepository.deleteAllByUsername(user.getUsername());
           userRepository.deleteByUsername(user.getUsername());
           return CompleteResponseDto.success("유저삭제 성공");
+     }
+     
+     public CompleteResponseDto quitUser(LoginRequestDto loginRequestDto, User user) {
+          return CompleteResponseDto.success("유저탈퇴 성공");
      }
 }
