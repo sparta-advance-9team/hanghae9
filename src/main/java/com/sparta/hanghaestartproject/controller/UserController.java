@@ -1,26 +1,17 @@
 package com.sparta.hanghaestartproject.controller;
 
 import com.sparta.hanghaestartproject.dto.*;
-import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
-import com.sparta.hanghaestartproject.errorcode.ErrorCode;
-import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
-import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.repository.UserRepository;
 import com.sparta.hanghaestartproject.security.UserDetailsImpl;
-import com.sparta.hanghaestartproject.security.UserDetailsServiceImpl;
 import com.sparta.hanghaestartproject.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
 @RequestMapping ("/api/user")
@@ -53,6 +44,11 @@ public class UserController {
      }
      
      @Secured (value = UserRoleEnum.Authority.ADMIN)
+     @DeleteMapping("/deleteUser")
+     public CompleteResponseDto deleteUserByAdmin(@RequestBody LoginRequestDto loginRequestDto, @AuthenticationPrincipal UserDetailsImpl adminDetail){
+          return userService.deleteUserByAdmin(loginRequestDto, adminDetail.getUser());
+     }
+     
      @DeleteMapping("/deleteUser")
      public CompleteResponseDto deleteUser(@RequestBody LoginRequestDto loginRequestDto, @AuthenticationPrincipal UserDetailsImpl adminDetail){
           return userService.deleteUser(loginRequestDto, adminDetail.getUser());

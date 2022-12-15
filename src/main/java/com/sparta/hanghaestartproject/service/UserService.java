@@ -5,7 +5,6 @@ import com.sparta.hanghaestartproject.dto.CompleteResponseDto;
 import com.sparta.hanghaestartproject.dto.SignupRequestDto;
 import com.sparta.hanghaestartproject.entity.User;
 import com.sparta.hanghaestartproject.entity.UserRoleEnum;
-import com.sparta.hanghaestartproject.errorcode.CommonErrorCode;
 import com.sparta.hanghaestartproject.errorcode.UserErrorCode;
 import com.sparta.hanghaestartproject.exception.RestApiException;
 import com.sparta.hanghaestartproject.jwt.JwtUtil;
@@ -83,7 +82,7 @@ public class UserService {
      }
      
      @Transactional
-     public CompleteResponseDto deleteUser(LoginRequestDto loginRequestDto, User admin) {
+     public CompleteResponseDto deleteUserByAdmin(LoginRequestDto loginRequestDto, User admin) {
           if (admin.getRole().equals(UserRoleEnum.USER)) {
                throw new RestApiException(UserErrorCode.ONLY_FOR_ADMIN);
           }
