@@ -49,9 +49,9 @@ public class UserController {
           return userService.deleteUserByAdmin(loginRequestDto, adminDetail.getUser());
      }
      
-     @DeleteMapping("/deleteUser")
-     public CompleteResponseDto deleteUser(@RequestBody LoginRequestDto loginRequestDto, @AuthenticationPrincipal UserDetailsImpl adminDetail){
-          return userService.deleteUser(loginRequestDto, adminDetail.getUser());
+     @DeleteMapping("/quitUser")
+     public CompleteResponseDto quitUser(@RequestBody LoginRequestDto loginRequestDto, @AuthenticationPrincipal UserDetailsImpl adminDetail){
+          return userService.quitUser(loginRequestDto, adminDetail.getUser());
      }
      
      
