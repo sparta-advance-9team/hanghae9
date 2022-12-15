@@ -68,6 +68,7 @@ public class PostService {
           Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC; // Direction : Sort 안의 ENUM. ASC or DESC
           Sort sort = Sort.by(direction, sortBy);
           Pageable pageable = PageRequest.of(page, size, sort); // page : zero-based page index, size : the size of the page to be returned,
+          
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
      
@@ -82,28 +83,27 @@ public class PostService {
      public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
-          
-          if (user.getRole() == UserRoleEnum.USER) {
-               if (!post.getUsername().equals(user.getUsername())) {
-                    throw new RestApiException(CommonErrorCode.INVALID_USER);
-               }
-          }
+     
+          checkSameUser(user, post);
           post.update(requestDto);
           return new PostResponseDto(post);
      }
-     
      @Transactional
      public CompleteResponseDto deletePost(Long id, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
-          
+     
+          checkSameUser(user, post);
+          postRepository.delete(post);
+          return CompleteResponseDto.success("게시글 삭제 성공");
+     }
+     
+     private static void checkSameUser(User user, Post post) {
           if (user.getRole() == UserRoleEnum.USER) {
                if (!post.getUsername().equals(user.getUsername())) {
                     throw new RestApiException(CommonErrorCode.INVALID_USER);
                }
           }
-          postRepository.delete(post);
-          return CompleteResponseDto.success("게시글 삭제 성공");
      }
      
 }
