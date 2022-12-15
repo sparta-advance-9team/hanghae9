@@ -30,10 +30,6 @@ public class CommentResponseDto{
 
      public Long getLikeCommentNum(){
           return this.likeCommentNum;
-
-          this.recomments = comment.getReCommentList().stream()
-                  .map(ReCommentResponseDto::new).collect(Collectors.toList());
-
      }
      public Long getId(){
           return this.id;

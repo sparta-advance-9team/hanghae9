@@ -90,4 +90,8 @@ public class Post extends Timestamped{
      public void setLikePostNum(Long sum) {// setLikePostNum 인자값을 뭘넣어야할까?
           this.likePostNum = sum;
      }
+     
+     public Long getLikePostNum() {
+          return likePostNum;
+     }
 }

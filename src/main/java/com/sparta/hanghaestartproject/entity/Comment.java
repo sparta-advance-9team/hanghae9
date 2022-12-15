@@ -77,7 +77,7 @@ public class Comment extends Timestamped {
 
      public Long getLikeCommentNum() {
           return this.likeCommentNum;
-
+     }
      public List<ReComment> getReCommentList(){ return reCommentList;}
 
      public void addReComment(ReComment reComment){
