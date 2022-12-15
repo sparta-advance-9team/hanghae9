@@ -29,7 +29,7 @@ public class PostService {
      private final PostRepository postRepository;
      private final CommentRepository commentRepository;
      private final UserRepository userRepository;
-     private final JwtUtil jwtUtil;
+//     private final JwtUtil jwtUtil;
 
      private final LikePostRepository likePostRepository;
      
@@ -38,7 +38,7 @@ public class PostService {
           this.postRepository = postRepository;
           this.commentRepository = commentRepository;
           this.userRepository = userRepository;
-          this.jwtUtil = jwtUtil;
+//          this.jwtUtil = jwtUtil;
           this.likePostRepository = likePostRepository;
      }
      
@@ -54,9 +54,7 @@ public class PostService {
      }
      
      @Transactional
-     public PostResponseDto createPost(PostRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
-          // 토큰이 있는 경우에만 관심상품 추가 가능
+     public PostResponseDto createPost(PostRequestDto requestDto, User user) {
           Post post = new Post(requestDto, user.getUsername());
           post = postRepository.save(post);
           Long Sum = likePostRepository.countByPost(post);
@@ -81,8 +79,7 @@ public class PostService {
      //- 토큰을 검사한 후, 유효한 토큰이면서 해당 사용자가 작성한 게시글만 수정 가능
      //- 제목, 작성 내용을 수정하고 수정된 게시글을 Client 로 반환하기
      @Transactional
-     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+     public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
@@ -96,8 +93,7 @@ public class PostService {
      }
      
      @Transactional
-     public CompleteResponseDto deletePost(Long id, HttpServletRequest request) {
-          User user = getUser.getUser(request);
+     public CompleteResponseDto deletePost(Long id, User user) {
           Post post = postRepository.findById(id)
                .orElseThrow(() -> new RestApiException(CommonErrorCode.NO_ARTICLE));
           
