@@ -27,9 +27,9 @@ public class CommentResponseDto{
           this.likeCommentNum = comment.getLikeCommentNum();
      }
 
-     public Long getLikeCommentNum(){
+     public Long getLikeCommentNum() {
           return this.likeCommentNum;
-
+     }
           this.recomments = comment.getReCommentList().stream()
                   .map(ReCommentResponseDto::new).collect(Collectors.toList());
 

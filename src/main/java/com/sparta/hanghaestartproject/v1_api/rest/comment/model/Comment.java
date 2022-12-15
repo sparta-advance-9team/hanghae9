@@ -1,9 +1,9 @@
 package com.sparta.hanghaestartproject.v1_api.rest.comment.model;
 
-import com.sparta.hanghaestartproject.v1_api.rest.comment.dto.CommentRequestDto;
-import com.sparta.hanghaestartproject.v1_api.rest.post.model.Post;
 import com.sparta.hanghaestartproject.config.model.Timestamped;
+import com.sparta.hanghaestartproject.v1_api.rest.comment.dto.CommentRequestDto;
 import com.sparta.hanghaestartproject.v1_api.rest.like.model.LikeComment;
+import com.sparta.hanghaestartproject.v1_api.rest.post.model.Post;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,32 +22,32 @@ public class Comment extends Timestamped {
      
      @Column (nullable = false)
      private String content;
-
+     
      @Column
      private Long likeCommentNum;
      
-     @ManyToOne(fetch = FetchType.LAZY)
-     @JoinColumn(name="post_id")
+     @ManyToOne (fetch = FetchType.LAZY)
+     @JoinColumn (name = "post_id")
      private Post post;
      
-     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+     @OneToMany (mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
      private Set<LikeComment> likeCommentList = new HashSet<>();
-
-     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+     
+     @OneToMany (mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
      private List<ReComment> reCommentList = new ArrayList<>();
-
-
+     
+     
      public Comment(CommentRequestDto requestDto, String username) {
           this.username = username;
           this.content = requestDto.getContent();
      }
      
-     public void updatePost(Post post){
+     public void updatePost(Post post) {
           this.post = post;
      }
      
      public void update(CommentRequestDto requestDto) {
-          this.content =  requestDto.getContent();
+          this.content = requestDto.getContent();
      }
      
      public Comment() {
@@ -72,19 +72,22 @@ public class Comment extends Timestamped {
      public Set<LikeComment> getLikeCommentList() {
           return likeCommentList;
      }
-
+     
      public void setLikeCommentNum(Long sum) {
           this.likeCommentNum = sum;
      }
-
+     
      public Long getLikeCommentNum() {
           return this.likeCommentNum;
-
-     public List<ReComment> getReCommentList(){ return reCommentList;}
-
-     public void addReComment(ReComment reComment){
+     }
+     
+     public List<ReComment> getReCommentList() {
+          return reCommentList;
+     }
+     
+     public void addReComment(ReComment reComment) {
           this.reCommentList.add(reComment);
           reComment.updateComment(this);
-
+          
      }
 }
