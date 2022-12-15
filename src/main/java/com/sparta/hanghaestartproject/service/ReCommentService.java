@@ -11,29 +11,24 @@ import com.sparta.hanghaestartproject.repository.CommentRepository;
 import com.sparta.hanghaestartproject.repository.PostRepository;
 import com.sparta.hanghaestartproject.repository.ReCommentRepository;
 import com.sparta.hanghaestartproject.repository.UserRepository;
-import com.sparta.hanghaestartproject.util.GetUser;
+import com.sparta.hanghaestartproject.util.Util;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @Service
 public class ReCommentService {
-
-    private final GetUser getUser;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final ReCommentRepository reCommentRepository;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
 
 
-    public ReCommentService(GetUser getUser, PostRepository postRepository, CommentRepository commentRepository, ReCommentRepository reCommentRepository, UserRepository userRepository, JwtUtil jwtUtil){
-        this.getUser = getUser;
+    public ReCommentService(PostRepository postRepository, CommentRepository commentRepository, ReCommentRepository reCommentRepository, UserRepository userRepository){
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.reCommentRepository = reCommentRepository;
         this.userRepository = userRepository;
-        this.jwtUtil = jwtUtil;
     }
 
     @Transactional
