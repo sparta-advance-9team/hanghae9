@@ -1,8 +1,25 @@
-## API&테스트케이스 [LINK](https://docs.google.com/spreadsheets/d/16m9RGblVgYA5vwvS9IT523fcfl0eii1AEGjc0mcoAHM/edit?usp=sharing)
+# My_blog
+나만의 블로그 백엔드 서버 만들기
+프로젝트 정보 : [LINK](https://teamsparta.notion.site/9-e7f813a42304461ca494da6a84cde546)
 
-# test
-## test
-### test
+## 개발기간
+2022년 12월 9일 ~ 2022년 12월 15일
+
+## 팀원
+-유종열(팀장)
+-김규민
+-장영주(개발팀장)
+-김현주
+-방승섭
+
+## Tech Stacks
+-Spring Boot
+-Spring Data JPA
+-Spring Security + JWT
+
+## API
+API&테스트케이스 [LINK](https://docs.google.com/spreadsheets/d/16m9RGblVgYA5vwvS9IT523fcfl0eii1AEGjc0mcoAHM/edit?usp=sharing)
+
 
 
 ## Why: 과제 제출시에는 아래 질문을 고민해보고 답변을 함께 제출해주세요.
