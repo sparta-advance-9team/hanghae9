@@ -7,6 +7,7 @@ import com.sparta.hanghaestartproject.security.UserDetailsImpl;
 import com.sparta.hanghaestartproject.service.ReCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
