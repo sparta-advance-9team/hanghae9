@@ -1,6 +1,5 @@
 package com.sparta.hanghaestartproject.entity;
 
-import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
