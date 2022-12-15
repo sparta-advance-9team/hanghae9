@@ -74,7 +74,7 @@ public class WebSecurityConfig {
           // Custom 로그인 페이지 사용
           http.formLogin().loginPage("/api/user/login-page").permitAll();
           // Custom Filter 등록하기 >> 언제쓰는거?
-          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
+//          http.addFilterBefore(new CustomSecurityFilter(userDetailsService, passwordEncoder()), UsernamePasswordAuthenticationFilter.class);
           // 접근 제한 페이지 이동 설정
           http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
           // 401 Error 처리, Authorization 즉, 인증과정에서 실패할 시 처리
